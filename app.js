@@ -1,18 +1,27 @@
 (function () {
-  const data = window.TERRAQO_DATA || { services: [], projects: [] };
+  const data = window.TERRAQO_DATA || { services: [], projects: [], products: [] };
   const pathParts = window.location.pathname.split("/").filter(Boolean);
   const directoryDepth = Math.max(0, pathParts.length - (window.location.pathname.endsWith("/") ? 0 : 1));
   const basePath = "../".repeat(directoryDepth);
-  const assetPath = (path) => path ? `${basePath}${path.replace(/^\.\//, "")}` : "";
+  const assetPath = (path) => {
+    if (!path) return "";
+    if (/^https?:\/\//.test(path)) return path;
+    return `${basePath}${path.replace(/^\.\//, "")}`;
+  };
+  const take = (items, root) => {
+    const limit = Number(root.getAttribute("data-limit") || 0);
+    return limit > 0 ? items.slice(0, limit) : items;
+  };
 
   const serviceGrid = document.querySelector("[data-services]");
   const projectGrid = document.querySelector("[data-projects]");
+  const productGrid = document.querySelector("[data-products]");
 
   if (serviceGrid) {
-    serviceGrid.innerHTML = data.services.map((service) => `
+    serviceGrid.innerHTML = take(data.services, serviceGrid).map((service) => `
       <article class="service-card reveal">
         <span></span>
-        <div class="card-meta">${service.metric} / ${service.metricLabel}</div>
+        <div class="card-meta">${service.category || "Topografia"} / ${service.metric || "QA/QC"}</div>
         <h3>${service.title}</h3>
         <p>${service.summary}</p>
         <a class="text-link" href="${basePath}servicios/${service.slug}/">Ver servicio</a>
@@ -21,7 +30,7 @@
   }
 
   if (projectGrid) {
-    projectGrid.innerHTML = data.projects.map((project) => `
+    projectGrid.innerHTML = take(data.projects, projectGrid).map((project) => `
       <article class="project-card reveal">
         <a href="${basePath}casos-exito/${project.slug}/">
           <img src="${assetPath(project.image)}" alt="${project.title}" />
@@ -36,7 +45,27 @@
     `).join("");
   }
 
-  const revealItems = Array.from(document.querySelectorAll(".reveal, .service-card, .project-card, .process-item"));
+  if (productGrid) {
+    productGrid.innerHTML = take(data.products, productGrid).map((product) => {
+      const price = product.price ? `${product.currency || "USD"} ${Number(product.price).toLocaleString("en-US")}` : "Cotizar";
+      return `
+        <article class="product-card reveal">
+          <a href="${basePath}tienda/${product.slug}/">
+            <div class="product-media"><img src="${assetPath(product.mainImage || "./public/images/equipo-topografico.jpg")}" alt="${product.name}" /></div>
+            <div>
+              <span class="card-meta">${product.category} / ${product.brand}</span>
+              <h3>${product.name}</h3>
+              <p>${product.summary}</p>
+              <div class="product-row"><strong>${price}</strong><span>${product.availability}</span></div>
+              <span class="text-link">Ver ficha tecnica</span>
+            </div>
+          </a>
+        </article>
+      `;
+    }).join("");
+  }
+
+  const revealItems = Array.from(document.querySelectorAll(".reveal, .service-card, .project-card, .product-card, .process-item"));
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

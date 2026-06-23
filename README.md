@@ -19,14 +19,15 @@ Sitio publico para `icctopografia.com`, preparado para despliegue estatico en Ne
 
 - `/`
 - `/servicios/`
-- `/servicios/levantamiento-topografico/`
-- `/servicios/lidar/`
-- `/servicios/control-de-obra/`
-- `/servicios/monitoreo/`
-- `/servicios/cartografia-sig/`
+- `/servicios/topografia-convencional-y-automatizada/`
+- `/servicios/escaneo-laser-3d-lidar-terrestre/`
+- `/servicios/control-geometrico-de-obras/`
+- `/servicios/geodesia-satelital-gnss-rtk/`
+- `/servicios/gestion-geoespacial-sig-gis/`
 - `/casos-exito/`
 - `/metodo-icc/`
 - `/tienda/`
+- `/tienda/estacion-total-robotica-rt500/`
 - `/nosotros/`
 - `/contacto/`
 

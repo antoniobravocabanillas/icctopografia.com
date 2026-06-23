@@ -2,17 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://icctopografia.com/</loc></url>
   <url><loc>https://icctopografia.com/servicios/</loc></url>
-  <url><loc>https://icctopografia.com/servicios/levantamiento-topografico/</loc></url>
-  <url><loc>https://icctopografia.com/servicios/lidar/</loc></url>
-  <url><loc>https://icctopografia.com/servicios/control-de-obra/</loc></url>
-  <url><loc>https://icctopografia.com/servicios/monitoreo/</loc></url>
-  <url><loc>https://icctopografia.com/servicios/cartografia-sig/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/gestion-de-proyectos-geomaticos/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/capacitacion-tecnica/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/revision-y-validacion-de-estudios/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/peritaje-topografico/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/consultoria-en-precision-geometrica/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/topografia-para-infraestructura-agroindustrial/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/levantamientos-para-redd-y-certificacion-forestal/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/delimitacion-de-areas-de-conservacion-y-reservas/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/topografia-para-proyectos-de-irrigacion-y-canales/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/monitoreo-geodesico-de-presas-de-relaves/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/control-de-voladuras-y-movimiento-de-material/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/cubicacion-de-tajos-abiertos-y-labores-subterraneas/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/levantamiento-y-marcacion-de-concesiones-mineras/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/topografia-para-redes-de-agua-desague-y-energia/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/perfiles-longitudinales-y-secciones-transversales/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/levantamientos-para-carreteras-puentes-y-tuneles/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/peritaje-topografico-legal/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/catastro-municipal/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/independizacion-y-acumulacion-de-predios/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/saneamiento-fisico-legal-de-predios/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/levantamiento-catastral-urbano-y-rural/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/hidrologia-basica-aplicada/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/monitoreo-de-taludes-y-subsidencias/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/cubicacion-y-movimiento-de-tierras/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/mecanica-de-suelos-y-geotecnia/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/entrega-y-productos-digitales/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/gestion-geoespacial-sig-gis/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/modelado-3d-y-metodologia-bim/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/fotogrametria-con-drones-uav/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/control-geometrico-de-obras/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/batimetria/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/escaneo-laser-3d-lidar-terrestre/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/geodesia-satelital-gnss-rtk/</loc></url>
+  <url><loc>https://icctopografia.com/servicios/topografia-convencional-y-automatizada/</loc></url>
   <url><loc>https://icctopografia.com/casos-exito/</loc></url>
   <url><loc>https://icctopografia.com/casos-exito/lima-airport-topografia-aeroportuaria/</loc></url>
-  <url><loc>https://icctopografia.com/casos-exito/control-topografico-edificacion/</loc></url>
-  <url><loc>https://icctopografia.com/casos-exito/base-cartografica-sig-predial/</loc></url>
-  <url><loc>https://icctopografia.com/metodo-icc/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/gonzales-candamo-224-topografia-abril/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/control-topografico-corredor-vial-demo/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/midgo-topografia-cosapi/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/derby-182-topografia-vyv/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/oi-peru-topografia-infraestructura/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/malen-fistrovic-topografia-arquitectura/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/iestp-4-de-junio-topografia-jaen/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/ie-2096-peru-japon-topografia/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/megacentro-lurin-topografia/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/look-and-feel-topografia-grupo-tyc/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/aspiria-barranco-topografia/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/tree-topografia-grupo-tyc/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/edificio-naxos-topografia-ifi/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/lumiere-7-topografia-llosa/</loc></url>
+  <url><loc>https://icctopografia.com/casos-exito/san-felipe-1190-topografia-vyv/</loc></url>
   <url><loc>https://icctopografia.com/tienda/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/drone-mapping-vtol-x4/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/radio-motorola-dep450/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/distanciometro-leica-disto-x4/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/estacion-total-leica-ts07-r500/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/nivel-digital-precisio-dl2/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/gnss-rtk-gx7/</loc></url>
+  <url><loc>https://icctopografia.com/tienda/estacion-total-robotica-rt500/</loc></url>
+  <url><loc>https://icctopografia.com/metodo-icc/</loc></url>
   <url><loc>https://icctopografia.com/nosotros/</loc></url>
   <url><loc>https://icctopografia.com/contacto/</loc></url>
 </urlset>

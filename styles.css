@@ -66,12 +66,17 @@ h3 { margin: 0; font-size: 22px; }
 .process-item { display: grid; grid-template-columns: 78px 1fr; gap: 20px; padding: 22px; border: 1px solid rgba(0,143,135,.16); border-radius: 18px; background: rgba(255,255,255,.82); box-shadow: var(--shadow); }
 .process-item strong { color: var(--brand); font-family: var(--font-data); font-size: 34px; }
 .process-item p { margin: 8px 0 0; color: var(--muted); }
-.project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.project-card { overflow: hidden; border: 1px solid rgba(0,143,135,.16); border-radius: 22px; background: white; box-shadow: var(--shadow); transition: transform .35s ease, box-shadow .35s ease; }
-.project-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 44px 110px rgba(0, 54, 52, 0.18); }
+.project-grid,.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.project-card,.product-card { overflow: hidden; border: 1px solid rgba(0,143,135,.16); border-radius: 22px; background: white; box-shadow: var(--shadow); transition: transform .35s ease, box-shadow .35s ease; }
+.project-card:hover,.product-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 44px 110px rgba(0, 54, 52, 0.18); }
 .project-card img { width: 100%; height: 280px; object-fit: cover; }
-.project-card div { padding: 24px; }
-.project-card p { color: var(--muted); line-height: 1.65; }
+.project-card div,.product-card div:not(.product-media):not(.product-row) { padding: 24px; }
+.project-card p,.product-card p { color: var(--muted); line-height: 1.65; }
+.product-media { display: grid; place-items: center; height: 260px; background: linear-gradient(135deg, #eef7f6, #ffffff); padding: 22px; }
+.product-media img { width: 100%; height: 100%; object-fit: contain; }
+.product-row { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-top: 18px; border-top: 1px solid var(--line); padding-top: 16px; }
+.product-row strong { color: var(--brand); font-family: var(--font-data); font-size: 18px; }
+.product-row span { color: var(--muted); font-size: 13px; text-align: right; }
 .equipment-panel, .detail-panel { padding: 34px; border-radius: 22px; background: var(--ink); color: white; box-shadow: 0 40px 100px rgba(0, 28, 32, 0.28); }
 .equipment-panel ul { display: grid; gap: 14px; margin: 22px 0 0; padding: 0; list-style: none; }
 .equipment-panel li { padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.78); }
@@ -95,7 +100,7 @@ h3 { margin: 0; font-size: 22px; }
 .workspace-grid .eyebrow { color: #7ff2e9; }
 .workspace-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .workspace-flow span { min-height: 120px; display: grid; place-items: center; text-align: center; border: 1px solid rgba(127,242,233,.18); border-radius: 18px; background: rgba(255,255,255,.055); padding: 18px; color: rgba(255,255,255,.78); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
-.reveal, .service-card, .project-card, .process-item { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.reveal, .service-card, .project-card, .product-card, .process-item { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
 .is-visible { opacity: 1; transform: translateY(0); }
 .detail-hero { position: relative; min-height: 76svh; display: grid; align-items: end; overflow: hidden; background: #071c22; color: white; }
 .detail-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -159,7 +164,7 @@ h3 { margin: 0; font-size: 22px; }
   .site-header { grid-template-columns: 1fr auto; padding: 12px 20px; }
   .brand img { width: 190px; }
   nav { display: none; }
-  .signal-grid,.service-grid,.project-grid,.split,.quote-grid,.footer-grid,.workspace-grid,.workspace-flow,.detail-hero-grid,.detail-facts,.project-detail-grid,.insight-grid,.evidence-grid { grid-template-columns: 1fr; }
+  .signal-grid,.service-grid,.project-grid,.product-grid,.split,.quote-grid,.footer-grid,.workspace-grid,.workspace-flow,.detail-hero-grid,.detail-facts,.project-detail-grid,.insight-grid,.evidence-grid { grid-template-columns: 1fr; }
   .signal-grid div { border-right: 0; border-bottom: 1px solid var(--line); }
   .quote-form { grid-template-columns: 1fr; }
   .hero-orbit { display: none; }
