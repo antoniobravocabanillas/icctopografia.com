@@ -17,6 +17,42 @@
     if (/^https?:\/\//.test(path)) return path;
     return `${basePath}${path.replace(/^\.\//, "")}`;
   };
+  const siteHeader = () => `
+    <header class="site-header">
+      <a class="brand" href="${basePath}index.html"><img src="${basePath}public/brand/icc-topografia-logo.png" alt="ICC Topografia"></a>
+      <nav>
+        <a href="${basePath}servicios/">Servicios</a>
+        <a href="${basePath}casos-exito/">Casos</a>
+        <a href="${basePath}metodo-icc/">Metodo ICC</a>
+        <a href="${basePath}tienda/">Tienda tecnica</a>
+        <a href="${basePath}contacto/">Contacto</a>
+      </nav>
+      <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
+    </header>
+  `;
+  const siteFooter = () => `
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <img class="footer-logo" src="${basePath}public/brand/icc-topografia-logo.png" alt="ICC Topografia" />
+          <p>ICC Topografia Group S.A.C. - precision metrica, tecnologia LiDAR y control tecnico para proyectos en Peru.</p>
+        </div>
+        <div>
+          <h3>Contacto</h3>
+          <a href="mailto:contacto@icctopografia.com">contacto@icctopografia.com</a>
+          <a href="tel:+51949844865">+51 949 844 865</a>
+          <a href="https://wa.me/51949844865" target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+        <div>
+          <h3>Workspace</h3>
+          <a href="${basePath}servicios/">Servicios</a>
+          <a href="${basePath}casos-exito/">Casos de exito</a>
+          <a href="${basePath}tienda/">Tienda tecnica</a>
+          <a href="${basePath}contacto/">Solicitar cotizacion</a>
+        </div>
+      </div>
+    </footer>
+  `;
 
   const isService = type === "service";
   const isProduct = type === "product";
@@ -27,6 +63,7 @@
     const specs = Object.entries(item.specs || {});
     const price = item.price ? `${item.currency || "USD"} ${Number(item.price).toLocaleString("en-US")}` : "Cotizacion especializada";
     root.innerHTML = `
+      ${siteHeader()}
       <section class="detail-hero service-detail-hero">
         <div class="detail-overlay"></div>
         <div class="container detail-content">
@@ -83,6 +120,7 @@
         </div>
       </section>
       ${quoteSection(title)}
+      ${siteFooter()}
     `;
     return;
   }
@@ -91,6 +129,7 @@
   const metrics = item.metrics || [["Control", item.metric || "Trazabilidad"], ["Ubicacion", item.location || "Por confirmar"], ["Estado", item.status || "Publicado"]];
   const progress = item.progress || [];
   root.innerHTML = `
+    ${siteHeader()}
     <section class="detail-hero ${isService ? "service-detail-hero" : ""}">
       ${!isService ? `<img src="${assetPath(item.image)}" alt="${title}" />` : ""}
       <div class="detail-overlay"></div>
@@ -122,6 +161,7 @@
     </section>
     ${isService ? serviceBody(item) : projectBody(item, gallery, progress)}
     ${quoteSection(title)}
+    ${siteFooter()}
   `;
 
   function serviceBody(service) {

@@ -1,1 +1,115 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tienda tecnica ICC Topografia | ICC Topografia</title><meta name="description" content="Equipos topograficos, GNSS, estaciones totales, niveles, drones y accesorios migrados desde Terraqo."><link rel="stylesheet" href="../styles.css"><script src="../terraqo-data.js" defer></script><script src="../app.js" defer></script></head><body><header class="site-header"><a class="brand" href="../index.html"><img src="../public/brand/icc-topografia-logo.png" alt="ICC Topografia"></a><nav><a href="../servicios/">Servicios</a><a href="../casos-exito/">Casos</a><a href="../tienda/">Tienda</a><a href="../contacto/">Contacto</a></nav><a class="header-cta" href="../contacto/">Cotizar</a></header><main><section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">ICC Topografia</p><h1>Tienda tecnica ICC Topografia</h1><p>Equipos topograficos, GNSS, estaciones totales, niveles, drones y accesorios migrados desde Terraqo.</p></div><div class="product-grid" data-products></div></div></section></main></body></html>
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tienda tecnica ICC Topografia | ICC Topografia</title>
+    <meta name="description" content="Equipos topograficos, GNSS, estaciones totales, niveles, drones y accesorios migrados desde Terraqo.">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="../terraqo-data.js?v=20260623-store-shell" defer></script>
+    <script src="../app.js?v=20260623-store-shell" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html"><img src="../public/brand/icc-topografia-logo.png" alt="ICC Topografia"></a>
+      <nav>
+        <a href="../servicios/">Servicios</a>
+        <a href="../casos-exito/">Casos</a>
+        <a href="../metodo-icc/">Metodo ICC</a>
+        <a href="../tienda/">Tienda tecnica</a>
+        <a href="../contacto/">Contacto</a>
+      </nav>
+      <a class="header-cta" href="../contacto/">Cotizar</a>
+    </header>
+
+    <main>
+      <section class="section store-hero">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">ICC Topografia</p>
+            <h1>Tienda tecnica ICC Topografia</h1>
+            <p>Catalogo comercial migrado desde Terraqo: equipos topograficos, GNSS, estaciones totales, niveles, drones y accesorios con filtros, disponibilidad y comparacion tecnica.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="store-section">
+        <div class="container store-layout" data-store>
+          <aside class="store-filters">
+            <div>
+              <p class="eyebrow">Buscar</p>
+              <input data-store-search type="search" placeholder="Equipo, marca, modelo o uso">
+            </div>
+            <div>
+              <p class="eyebrow">Categorias</p>
+              <div class="filter-stack" data-store-categories></div>
+            </div>
+            <div>
+              <p class="eyebrow">Disponibilidad</p>
+              <div class="filter-grid" data-store-availability>
+                <button class="filter-button is-active" type="button" data-value="all">Todos</button>
+                <button class="filter-button" type="button" data-value="priced">Con precio</button>
+                <button class="filter-button" type="button" data-value="quote">Cotizacion</button>
+                <button class="filter-button" type="button" data-value="stock">Stock</button>
+              </div>
+            </div>
+            <div>
+              <p class="eyebrow">Orden</p>
+              <select data-store-sort>
+                <option value="featured">Destacados</option>
+                <option value="price-asc">Precio menor a mayor</option>
+                <option value="price-desc">Precio mayor a menor</option>
+                <option value="name">Nombre A-Z</option>
+              </select>
+            </div>
+            <button class="clear-button" type="button" data-store-clear>Limpiar filtros</button>
+          </aside>
+
+          <div class="store-content">
+            <div class="store-toolbar">
+              <p data-store-count>Equipos disponibles</p>
+              <button class="compare-open" type="button" data-store-compare-open disabled>Comparar equipos (0)</button>
+            </div>
+            <div class="compare-strip" data-store-compare-strip></div>
+            <div class="product-grid" data-store-products></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <img class="footer-logo" src="../public/brand/icc-topografia-logo.png" alt="ICC Topografia" />
+          <p>ICC Topografia Group S.A.C. - precision metrica, tecnologia LiDAR y control tecnico para proyectos en Peru.</p>
+        </div>
+        <div>
+          <h3>Contacto</h3>
+          <a href="mailto:contacto@icctopografia.com">contacto@icctopografia.com</a>
+          <a href="tel:+51949844865">+51 949 844 865</a>
+          <a href="https://wa.me/51949844865" target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+        <div>
+          <h3>Workspace</h3>
+          <a href="../servicios/">Servicios</a>
+          <a href="../casos-exito/">Casos de exito</a>
+          <a href="../tienda/">Tienda tecnica</a>
+          <a href="../contacto/">Solicitar cotizacion</a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="compare-modal" data-store-compare-modal hidden>
+      <div class="compare-dialog" role="dialog" aria-modal="true" aria-label="Comparador de equipos">
+        <div class="compare-head">
+          <div>
+            <p class="eyebrow">Comparador tecnico</p>
+            <h2>Equipos seleccionados</h2>
+          </div>
+          <button type="button" data-store-compare-close>Cerrar</button>
+        </div>
+        <div class="compare-body" data-store-compare-body></div>
+      </div>
+    </div>
+  </body>
+</html>

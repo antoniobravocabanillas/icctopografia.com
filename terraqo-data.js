@@ -1461,7 +1461,7 @@ window.TERRAQO_DATA = {
       "image": "./public/images/obra-construccion.jpg",
       "gallery": [
         "./public/images/ingenieria-campo.jpg",
-        "./public/images/equipo-topografico.jpg"
+        "./public/images/equipo-topografico-store.jpg"
       ],
       "summary": "Servicios integrales de topografía aplicados al proyecto Gonzales Cándamo 224, garantizando precisión geométrica y soporte técnico durante la ejecución de la obra residencial.",
       "challenge": "El principal desafío consistió en mantener precisión topográfica constante dentro de un entorno urbano con limitaciones operativas y exigencias estructurales de alta precisión.\r\n\r\nAsimismo, fue necesario realizar controles permanentes de niveles, ejes y alineamientos para evitar desviaciones geométricas que pudieran impactar el desarrollo constructivo.",
@@ -1512,7 +1512,7 @@ window.TERRAQO_DATA = {
       "clientName": "Cosapi Inmobiliaria",
       "image": "./public/images/ingenieria-campo.jpg",
       "gallery": [
-        "./public/images/equipo-topografico.jpg",
+        "./public/images/equipo-topografico-store.jpg",
         "./public/images/hero-topografia.jpg"
       ],
       "summary": "Servicios especializados de topografía para el desarrollo y ejecución de un proyecto inmobiliario multifamiliar, garantizando precisión geométrica, control de niveles y soporte técnico para todas las etapas constructivas.",
@@ -1562,7 +1562,7 @@ window.TERRAQO_DATA = {
       "location": "Lima, Perú",
       "status": "IN_PROGRESS",
       "clientName": "Cosapi Inmobiliaria",
-      "image": "./public/images/equipo-topografico.jpg",
+      "image": "./public/images/equipo-topografico-store.jpg",
       "gallery": [
         "./public/images/hero-topografia.jpg",
         "./public/images/obra-construccion.jpg"
@@ -1669,7 +1669,7 @@ window.TERRAQO_DATA = {
       "image": "./public/images/obra-construccion.jpg",
       "gallery": [
         "./public/images/ingenieria-campo.jpg",
-        "./public/images/equipo-topografico.jpg"
+        "./public/images/equipo-topografico-store.jpg"
       ],
       "summary": "Servicios especializados de topografía aplicados a proyectos de infraestructura y construcción desarrollados por OI Perú, garantizando precisión geométrica y soporte técnico durante la ejecución de obra.",
       "challenge": "El principal desafío consistió en mantener precisión topográfica continua dentro de proyectos de infraestructura de alta exigencia técnica, donde el control geométrico y la compatibilización entre especialidades eran fundamentales para asegurar calidad constructiva y eficiencia operativa.\r\n\r\nAsimismo, fue necesario implementar supervisión permanente de niveles, alineamientos y estructuras durante las distintas fases de avance de obra.",
@@ -1720,7 +1720,7 @@ window.TERRAQO_DATA = {
       "clientName": "Malen Fistrovic Arquitectos",
       "image": "./public/images/ingenieria-campo.jpg",
       "gallery": [
-        "./public/images/equipo-topografico.jpg",
+        "./public/images/equipo-topografico-store.jpg",
         "./public/images/hero-topografia.jpg"
       ],
       "summary": "Servicios especializados de topografía orientados a proyectos arquitectónicos y residenciales, garantizando precisión geométrica y soporte técnico durante las distintas etapas de diseño y ejecución constructiva.",
@@ -1770,7 +1770,7 @@ window.TERRAQO_DATA = {
       "location": "Jaén, Cajamarca, Perú",
       "status": "ARCHIVED",
       "clientName": "Unidad Ejecutora 118 – Gobierno del Perú",
-      "image": "./public/images/equipo-topografico.jpg",
+      "image": "./public/images/equipo-topografico-store.jpg",
       "gallery": [
         "./public/images/hero-topografia.jpg",
         "./public/images/obra-construccion.jpg"
@@ -1877,7 +1877,7 @@ window.TERRAQO_DATA = {
       "image": "./public/images/obra-construccion.jpg",
       "gallery": [
         "./public/images/ingenieria-campo.jpg",
-        "./public/images/equipo-topografico.jpg"
+        "./public/images/equipo-topografico-store.jpg"
       ],
       "summary": "Servicios especializados de topografía aplicados al desarrollo de Megacentro Lurín, garantizando precisión geométrica y soporte técnico para infraestructura logística e industrial de gran escala.",
       "challenge": "El principal desafío consistió en mantener precisión topográfica dentro de una infraestructura industrial de gran escala, donde el control geométrico de plataformas, niveles y alineamientos era crítico para garantizar operatividad logística y compatibilidad estructural.\r\n\r\nAsimismo, fue necesario supervisar extensas áreas de movimiento de tierras y asegurar precisión en la ejecución de pavimentos, vías y estructuras industriales.",
@@ -1928,7 +1928,7 @@ window.TERRAQO_DATA = {
       "clientName": "Grupo T&C",
       "image": "./public/images/ingenieria-campo.jpg",
       "gallery": [
-        "./public/images/equipo-topografico.jpg",
+        "./public/images/equipo-topografico-store.jpg",
         "./public/images/hero-topografia.jpg"
       ],
       "summary": "Servicios especializados de topografía aplicados al proyecto Look & Feel, garantizando precisión geométrica y soporte técnico continuo durante la ejecución de la obra residencial.",
@@ -1978,7 +1978,7 @@ window.TERRAQO_DATA = {
       "location": "Av. el Sol Este 530, Barranco 15063",
       "status": "ARCHIVED",
       "clientName": "Aspiria Inmobiliaria",
-      "image": "./public/images/equipo-topografico.jpg",
+      "image": "./public/images/equipo-topografico-store.jpg",
       "gallery": [
         "./public/images/hero-topografia.jpg",
         "./public/images/obra-construccion.jpg"
@@ -2085,7 +2085,7 @@ window.TERRAQO_DATA = {
       "image": "./public/images/obra-construccion.jpg",
       "gallery": [
         "./public/images/ingenieria-campo.jpg",
-        "./public/images/equipo-topografico.jpg"
+        "./public/images/equipo-topografico-store.jpg"
       ],
       "summary": "Servicios de topografía aplicados al desarrollo del Edificio NAXOS, garantizando precisión en replanteos, control de niveles y soporte técnico durante la ejecución de obra multifamiliar.",
       "challenge": "El proyecto presentó desafíos asociados a la ejecución en entorno urbano consolidado, donde era fundamental mantener precisión topográfica dentro de espacios reducidos y bajo condiciones operativas dinámicas.\r\n\r\nAsimismo, se requería control permanente de niveles y ejes estructurales para asegurar compatibilidad entre especialidades y evitar errores acumulativos durante la construcción vertical.",
@@ -2137,7 +2137,7 @@ window.TERRAQO_DATA = {
       "clientName": "Llosa Edificaciones",
       "image": "./public/images/ingenieria-campo.jpg",
       "gallery": [
-        "./public/images/equipo-topografico.jpg",
+        "./public/images/equipo-topografico-store.jpg",
         "./public/images/hero-topografia.jpg"
       ],
       "summary": "Servicios especializados de topografía aplicados al proyecto Lumiere 7, garantizando precisión técnica y control geométrico durante las distintas etapas constructivas del edificio residencial.",
@@ -2187,7 +2187,7 @@ window.TERRAQO_DATA = {
       "location": "Jesús María, Lima, Perú",
       "status": "PUBLISHED",
       "clientName": "V&V Grupo Inmobiliario",
-      "image": "./public/images/equipo-topografico.jpg",
+      "image": "./public/images/equipo-topografico-store.jpg",
       "gallery": [
         "./public/images/hero-topografia.jpg",
         "./public/images/obra-construccion.jpg"
@@ -2254,7 +2254,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "PPK": "Integrado",
         "Sensor": "RGB 42 MP",
@@ -2283,7 +2283,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "Uso": "Campo y operaciones",
         "Canales": "16 o 64",
@@ -2312,7 +2312,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "Rango": "0.05 m a 150 m",
         "Pantalla": "Color de alta resolucion",
@@ -2342,7 +2342,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "Energia": "Bateria Li-Ion GEB331",
         "Memoria": "2 GB Flash",
@@ -2372,7 +2372,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "Aumento": "32x",
         "Memoria": "30,000 lecturas",
@@ -2401,7 +2401,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "IMU": "Inclinacion hasta 60 grados",
         "Radio": "UHF interna",
@@ -2431,7 +2431,7 @@ window.TERRAQO_DATA = {
       "rentalPrice": null,
       "tags": [],
       "images": [],
-      "mainImage": "./public/images/equipo-topografico.jpg",
+      "mainImage": "./public/images/equipo-topografico-store.jpg",
       "specs": {
         "Alcance": "Hasta 1,000 m sin prisma",
         "Precision": "1 segundo",
