@@ -82,6 +82,8 @@ h3 { margin: 0; font-size: 22px; }
 .quote-form input,.quote-form select,.quote-form textarea { width: 100%; border: 1px solid var(--line); border-radius: 4px; padding: 15px; color: var(--ink); font: inherit; }
 .quote-form textarea { grid-column: 1 / -1; min-height: 130px; resize: vertical; }
 .quote-form button { grid-column: 1 / -1; min-height: 54px; }
+.checkbox-field { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; border: 1px solid rgba(0,143,135,.16); border-radius: 8px; background: rgba(223,244,242,.55); padding: 14px 15px; color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.45; }
+.checkbox-field input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--brand); flex: 0 0 auto; }
 .footer { padding: 54px 0; background: white; }
 .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr .8fr; gap: 42px; }
 .footer-logo { width: 240px; height: auto; }
@@ -142,6 +144,7 @@ h3 { margin: 0; font-size: 22px; }
 .progress-list strong { color: var(--brand); font-family: var(--font-data); font-size: 34px; line-height: 1; }
 .progress-list span { color: var(--muted); line-height: 1.65; }
 .progress-list b { display: block; margin-bottom: 4px; color: var(--ink); }
+.service-process { margin-top: 28px; }
 .sticky-spec { position: sticky; top: 104px; display: grid; gap: 16px; }
 .spec-card { padding: 24px; }
 .spec-card h3 { margin-bottom: 18px; font-size: 24px; }

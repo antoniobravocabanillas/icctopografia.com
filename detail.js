@@ -39,11 +39,11 @@
           </div>
           <aside class="result-panel">
             <p class="eyebrow">${isService ? "Alcance" : "Resultado operativo"}</p>
-            <h2>${isService ? "Entregables preparados para cotizacion" : "Logros tecnicos del servicio"}</h2>
+            <h2>${isService ? "Ficha tecnica para cotizacion" : "Logros tecnicos del servicio"}</h2>
             <div class="result-list">
               ${(isService ? item.deliverables : String(item.result || "").split(";")).map((entry) => `<div><span></span><p>${entry.trim()}</p></div>`).join("")}
             </div>
-            <a class="button primary full" href="#cotizar">Cotizar proyecto similar</a>
+            <a class="button primary full" href="#cotizar">${isService ? "Cotizar servicio" : "Cotizar proyecto similar"}</a>
           </aside>
         </div>
       </div>
@@ -111,14 +111,23 @@
     <section class="section">
       <div class="container split">
         <div>
-          <p class="eyebrow">${isService ? "Entregables" : "Resultado"}</p>
-          <h2>${isService ? "Alcance preparado para cotizacion estructurada" : item.result}</h2>
-          <p>${isService ? "Esta pagina funcionara como ficha publica alimentada por Terraqo Workspace. El panel podra publicar estado, aplicaciones, entregables y casos relacionados." : "Cada proyecto publicado debe venir desde el Panel ICC Topografia, con imagenes, estado, servicios aplicados y evidencias seleccionadas para el sitio publico."}</p>
+          <p class="eyebrow">Proceso tecnico</p>
+          <h2>Alcance preparado para compradores tecnicos</h2>
+          <p>${item.caseStudy || "Esta ficha publica sera alimentada desde Terraqo Workspace con ejemplos, equipos, rango de error y entregables."}</p>
+          <div class="progress-list service-process">
+            ${(item.process || []).map((entry, index) => `
+              <div>
+                <strong>${String(index + 1).padStart(2, "0")}</strong>
+                <span><b>${entry}</b>Control documentado para cotizacion y ejecucion.</span>
+              </div>
+            `).join("")}
+          </div>
         </div>
         <div class="detail-panel">
-          <h3>${isService ? "Incluye" : "Servicios aplicados"}</h3>
+          <h3>Equipos y precision</h3>
+          <p>${item.errorRange || "Rango de precision definido segun alcance, metodologia y condiciones de campo."}</p>
           <ul>
-            ${(isService ? item.deliverables : item.services).map((entry) => `<li>${entry}</li>`).join("")}
+            ${(item.equipment || []).map((entry) => `<li>${entry}</li>`).join("")}
           </ul>
         </div>
       </div>
@@ -136,6 +145,7 @@
           <input name="empresa" placeholder="Empresa" />
           <input name="telefono" placeholder="Telefono / WhatsApp" required />
           <input name="servicio" value="${item.title}" />
+          <label class="checkbox-field"><input type="checkbox" name="interes_equipos" value="si" /> Tambien estoy interesado en arriendo o compra de equipos</label>
           <textarea name="alcance" placeholder="Ubicacion, area aproximada, fecha requerida y alcance" required></textarea>
           <button type="submit">Enviar solicitud</button>
         </form>
