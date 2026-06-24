@@ -30,9 +30,21 @@
     });
   }
 
+  function initScrollState() {
+    const update = () => {
+      document.body.classList.toggle("is-scrolled", window.scrollY > 80);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileNav);
+    document.addEventListener("DOMContentLoaded", () => {
+      initMobileNav();
+      initScrollState();
+    });
   } else {
     initMobileNav();
+    initScrollState();
   }
 })();
