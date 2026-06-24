@@ -28,7 +28,20 @@
         <a href="${basePath}tienda/">Tienda tecnica</a>
         <a href="${basePath}contacto/">Contacto</a>
         <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
+        <div class="language-switch">
+          <button type="button" aria-label="Cambiar idioma">ES</button>
+          <div class="language-menu" aria-label="Idiomas disponibles">
+            <a href="?lang=en" lang="en">EN</a>
+            <a href="?lang=pt" lang="pt">PT</a>
+            <a href="?lang=de" lang="de">DE</a>
+          </div>
+        </div>
       </nav>
+      <aside class="announcement-strip" aria-label="Novedades ICC Topografia">
+        <span>Nuevo</span>
+        <strong>Casos, servicios y tienda tecnica conectados al ecosistema Terraqo</strong>
+        <a href="${basePath}contacto/">Cotizar alcance</a>
+      </aside>
     </header>
   `;
   const siteFooter = () => `
