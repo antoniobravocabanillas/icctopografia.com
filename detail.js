@@ -24,10 +24,11 @@
         <a href="${basePath}servicios/">Servicios</a>
         <a href="${basePath}casos-exito/">Casos</a>
         <a href="${basePath}metodo-icc/">Metodo ICC</a>
+        <a href="${basePath}nosotros/">Nosotros</a>
         <a href="${basePath}tienda/">Tienda tecnica</a>
         <a href="${basePath}contacto/">Contacto</a>
+        <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
       </nav>
-      <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
     </header>
   `;
   const siteFooter = () => `
