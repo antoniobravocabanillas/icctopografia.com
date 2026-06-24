@@ -28,7 +28,7 @@
         <a href="${basePath}tienda/">Tienda tecnica</a>
         <a href="${basePath}contacto/">Contacto</a>
         <a class="account-link" href="${basePath}cuenta/" aria-label="Cuenta cliente">Cuenta</a>
-        <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
+        <a class="header-cta" href="${basePath}contacto/">Cotizar proyecto</a>
         <div class="language-switch">
           <button type="button" aria-label="Cambiar idioma">ES</button>
           <div class="language-menu" aria-label="Idiomas disponibles">
