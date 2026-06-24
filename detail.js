@@ -27,6 +27,7 @@
         <a href="${basePath}nosotros/">Nosotros</a>
         <a href="${basePath}tienda/">Tienda tecnica</a>
         <a href="${basePath}contacto/">Contacto</a>
+        <a class="account-link" href="${basePath}cuenta/" aria-label="Cuenta cliente">Cuenta</a>
         <a class="header-cta" href="${basePath}contacto/">Cotizar</a>
         <div class="language-switch">
           <button type="button" aria-label="Cambiar idioma">ES</button>
@@ -252,10 +253,12 @@
             <h2>Solicita una evaluacion para ${contextTitle.toLowerCase()}</h2>
             <p>La solicitud quedara lista para convertirse en oportunidad dentro de Terraqo Workspace.</p>
           </div>
-          <form class="quote-form" action="mailto:contacto@icctopografia.com" method="post" enctype="text/plain">
+          <form class="quote-form" name="cotizacion" action="mailto:contacto@icctopografia.com" method="post" enctype="text/plain" data-account-redirect="${basePath}cuenta/">
+            <input type="hidden" name="form-name" value="cotizacion" />
             <input name="nombre" placeholder="Nombre y apellido" required />
             <input name="empresa" placeholder="Empresa" />
             <input name="telefono" placeholder="Telefono / WhatsApp" required />
+            <input name="correo" type="email" placeholder="Correo corporativo" required />
             <input name="servicio" value="${contextTitle}" />
             <label class="checkbox-field"><input type="checkbox" name="interes_equipos" value="si" /> Tambien estoy interesado en arriendo o compra de equipos</label>
             <textarea name="alcance" placeholder="Ubicacion, area aproximada, fecha requerida y alcance" required></textarea>

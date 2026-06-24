@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <script src="./terraqo-data.js" defer></script>
     <script src="./app.js" defer></script>
+    <script src="./quote-account.js" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -21,6 +22,7 @@
         <a href="./nosotros/">Nosotros</a>
         <a href="./tienda/">Tienda tecnica</a>
         <a href="./contacto/">Contacto</a>
+        <a class="account-link" href="./cuenta/" aria-label="Cuenta cliente">Cuenta</a>
         <a class="header-cta" href="#cotizar">Cotizar</a>
         <div class="language-switch">
           <button type="button" aria-label="Cambiar idioma">ES</button>
@@ -190,10 +192,12 @@
             <h2>Cuentanos el alcance topografico y te ayudamos a dimensionarlo</h2>
             <p>La solicitud queda preparada para entrar como oportunidad en Terraqo con etiquetas de servicio, obra y posible interes en equipos.</p>
           </div>
-          <form class="quote-form" action="mailto:contacto@icctopografia.com" method="post" enctype="text/plain">
+          <form class="quote-form" name="cotizacion" action="mailto:contacto@icctopografia.com" method="post" enctype="text/plain" data-netlify="true" data-account-redirect="./cuenta/">
+            <input type="hidden" name="form-name" value="cotizacion" />
             <input name="nombre" placeholder="Nombre y apellido" required />
             <input name="empresa" placeholder="Empresa" />
             <input name="telefono" placeholder="Telefono / WhatsApp" required />
+            <input name="correo" type="email" placeholder="Correo corporativo" required />
             <select name="servicio" required>
               <option value="">Tipo de servicio</option>
               <option>Levantamiento topografico clasico</option>
