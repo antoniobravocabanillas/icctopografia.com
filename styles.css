@@ -256,11 +256,26 @@ main > .section:first-child { padding-top: 156px; }
 .footer a { display: block; }
 .card-meta { margin-bottom: 14px; color: var(--brand); font-family: var(--font-data); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .text-link { display: inline-flex; margin-top: 18px; color: var(--brand); font-family: var(--font-title); font-weight: 800; }
-.workspace-strip { padding: 96px 0; background: #071c22; color: white; overflow: hidden; }
-.workspace-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 48px; align-items: center; }
-.workspace-grid .eyebrow { color: #7ff2e9; }
-.workspace-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.workspace-flow span { min-height: 120px; display: grid; place-items: center; text-align: center; border: 1px solid rgba(127,242,233,.18); border-radius: var(--radius-panel); background: rgba(255,255,255,.055); padding: 18px; color: rgba(255,255,255,.78); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+.commitment-section { position: relative; overflow: hidden; padding: 132px 0 126px; background: radial-gradient(circle at 18% 30%, rgba(0,143,135,.09), transparent 30%), linear-gradient(120deg, #f8fbfb 0%, #ffffff 56%, #edf6f5 100%); }
+.commitment-section .container { width: min(1360px, calc(100% - 64px)); }
+.commitment-section::before { content: ""; position: absolute; left: 18px; bottom: 36px; width: 170px; height: 170px; opacity: .36; background-image: radial-gradient(circle, rgba(0,143,135,.36) 1.5px, transparent 1.6px); background-size: 22px 22px; }
+.commitment-shapes { position: absolute; inset: 0; pointer-events: none; }
+.commitment-shapes::before,.commitment-shapes::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.64); background: rgba(0,143,135,.1); box-shadow: 0 26px 80px rgba(0,54,52,.08); }
+.commitment-shapes::before { right: -4vw; top: 0; width: 330px; height: 260px; background: linear-gradient(135deg, rgba(0,143,135,.06), rgba(0,143,135,.2)); }
+.commitment-shapes::after { right: 7vw; bottom: 38px; width: 360px; height: 270px; background: linear-gradient(135deg, rgba(0,143,135,.07), rgba(127,242,233,.2)); }
+.commitment-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 64px; align-items: center; }
+.commitment-copy h2 { max-width: 440px; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.18; color: #111f2a; }
+.commitment-copy h2 span { color: var(--brand); }
+.commitment-copy > i { display: block; width: 58px; height: 3px; margin: 30px 0 32px; background: var(--brand); }
+.commitment-copy p:not(.eyebrow) { max-width: 420px; margin: 0; color: #2f4248; line-height: 1.75; }
+.commitment-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.commitment-card { position: relative; min-height: 310px; display: grid; align-content: start; border: 1px solid rgba(0,143,135,.08); border-radius: var(--radius-ui); background: rgba(255,255,255,.88); padding: 34px 26px 28px; box-shadow: 0 32px 95px rgba(0,54,52,.08); backdrop-filter: blur(18px); transition: transform .32s ease, border-color .32s ease, box-shadow .32s ease; }
+.commitment-card:hover { border-color: rgba(0,143,135,.28); box-shadow: 0 38px 110px rgba(0,54,52,.13); transform: translateY(-8px); }
+.commitment-card svg { width: 58px; height: 58px; margin: 0 0 38px 2px; padding: 12px; overflow: visible; border-radius: 50%; background: radial-gradient(circle, rgba(127,242,233,.34), rgba(0,143,135,.06)); color: var(--brand); stroke: currentColor; stroke-width: 1.9; fill: none; stroke-linecap: round; stroke-linejoin: round; box-shadow: 0 18px 48px rgba(0,143,135,.13); }
+.commitment-card span { color: var(--brand); font-family: var(--font-data); font-size: 13px; font-weight: 800; }
+.commitment-card h3 { margin-top: 14px; font-size: 19px; line-height: 1.2; color: #101b24; }
+.commitment-card p { margin: 22px 0 0; color: #34484f; font-size: 14px; line-height: 1.7; }
+.commitment-card i { display: block; width: 34px; height: 3px; margin-top: 34px; background: var(--brand); }
 .reveal, .service-card, .project-card, .product-card, .process-item { opacity: 0; transform: translateY(28px) scale(.985); transition: opacity .75s cubic-bezier(.2,.72,.2,1), transform .75s cubic-bezier(.2,.72,.2,1); transition-delay: var(--reveal-delay, 0ms); }
 .is-visible { opacity: 1; transform: translateY(0); }
 .service-card.is-visible:hover,.project-card.is-visible:hover,.product-card.is-visible:hover { transform: translateY(-8px); }
@@ -326,6 +341,9 @@ main > .section:first-child { padding-top: 156px; }
   .featured-services-layout { grid-template-columns: 1fr; }
   .featured-services-heading { max-width: 720px; }
   .featured-service-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .commitment-grid { grid-template-columns: 1fr; gap: 42px; }
+  .commitment-copy { max-width: 560px; }
+  .commitment-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
   .site-header { position: fixed; top: 0; grid-template-columns: 1fr auto; gap: 12px; width: 100%; min-height: 72px; padding: 12px 14px 46px; background: linear-gradient(180deg, rgba(2,13,20,.96), rgba(2,13,20,.82)); backdrop-filter: blur(18px); }
@@ -369,7 +387,7 @@ main > .section:first-child { padding-top: 156px; }
   .section { padding: 78px 0; }
   main > .section:first-child { padding-top: 146px; }
   .site-header + main > .quote-section:first-child { padding-top: 148px; }
-  .signal-grid,.service-grid,.project-grid,.product-grid,.split,.quote-grid,.footer-grid,.workspace-grid,.workspace-flow,.detail-hero-grid,.detail-facts,.project-detail-grid,.insight-grid,.evidence-grid,.store-layout,.clients-content,.featured-services-layout { grid-template-columns: 1fr; }
+  .signal-grid,.service-grid,.project-grid,.product-grid,.split,.quote-grid,.footer-grid,.detail-hero-grid,.detail-facts,.project-detail-grid,.insight-grid,.evidence-grid,.store-layout,.clients-content,.featured-services-layout,.commitment-grid,.commitment-cards { grid-template-columns: 1fr; }
   .signal-grid div { border-right: 0; border-bottom: 1px solid var(--line); }
   .quote-form { grid-template-columns: 1fr; }
   .account-hero { padding: 140px 0 72px; background: radial-gradient(circle at 70% 10%, rgba(127,242,233,.12), transparent 28%), linear-gradient(135deg, #081112, #071314); }
@@ -397,6 +415,13 @@ main > .section:first-child { padding-top: 156px; }
   .featured-services-section .container { width: min(100% - 32px, 520px); }
   .featured-service-grid { grid-template-columns: 1fr; gap: 12px; }
   .featured-service-card { min-height: 260px; border-radius: var(--radius-ui); }
+  .commitment-section { padding: 84px 0; }
+  .commitment-section::before { width: 132px; height: 132px; opacity: .24; }
+  .commitment-shapes::before { width: 180px; height: 150px; right: -62px; }
+  .commitment-shapes::after { display: none; }
+  .commitment-copy h2 { font-size: clamp(31px, 9vw, 42px); }
+  .commitment-card { min-height: 250px; padding: 28px 24px; }
+  .commitment-card svg { margin-bottom: 24px; }
   .clients-section { padding: 82px 0 74px; }
   .clients-content { gap: 30px; }
   .clients-intro { max-width: 100%; }
