@@ -336,7 +336,7 @@
       const rect = section.getBoundingClientRect();
       const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
       const raw = clamp(-rect.top / scrollable, 0, 1);
-      const index = clamp(Math.floor(raw * cards.length), 0, cards.length - 1);
+      const index = clamp(Math.round(raw * (cards.length - 1)), 0, cards.length - 1);
       setActive(index);
       section.style.setProperty("--commitment-progress", String((index + 1) / cards.length));
       if (progress) progress.style.width = `${((index + 1) / cards.length) * 100}%`;
