@@ -42,7 +42,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "capacitacion-tecnica",
@@ -83,7 +83,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "revision-y-validacion-de-estudios",
@@ -124,7 +124,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "peritaje-topografico",
@@ -165,7 +165,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "consultoria-en-precision-geometrica",
@@ -206,7 +206,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "topografia-para-infraestructura-agroindustrial",
@@ -247,7 +247,7 @@ window.TERRAQO_DATA = {
         "Estacion total",
         "CAD/GIS"
       ],
-      "featured": false
+      "featured": true
     },
     {
       "slug": "levantamientos-para-redd-y-certificacion-forestal",

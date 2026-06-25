@@ -12,6 +12,15 @@
     const limit = Number(root.getAttribute("data-limit") || 0);
     return limit > 0 ? items.slice(0, limit) : items;
   };
+  const iconPaths = [
+    '<path d="M4 10 16 4l12 6-12 6L4 10Z"/><path d="M8 14l8 4 8-4"/><path d="M8 19l8 4 8-4"/>',
+    '<path d="M5 9 16 4l11 5-11 5L5 9Z"/><path d="M9 12v7c4 3 10 3 14 0v-7"/><path d="M27 9v8"/>',
+    '<path d="M9 5h11l5 5v17H9V5Z"/><path d="M20 5v6h6"/><path d="M13 17h8"/><path d="M13 22h6"/>',
+    '<path d="M16 6v22"/><path d="M8 28h16"/><path d="M11 10h10l-2 8h-6l-2-8Z"/><path d="M16 2v4"/><path d="M12 2h8"/>',
+    '<circle cx="16" cy="16" r="7"/><path d="M16 2v6"/><path d="M16 24v6"/><path d="M2 16h6"/><path d="M24 16h6"/>',
+    '<path d="M8 8h16v10H8V8Z"/><path d="M16 18v8"/><path d="M10 26h12"/><path d="M5 12H2"/><path d="M30 12h-3"/><path d="M12 5V2"/><path d="M20 5V2"/>',
+  ];
+  const renderServiceIcon = (index) => `<svg class="service-icon" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${iconPaths[index % iconPaths.length]}</svg>`;
 
   const serviceGrid = document.querySelector("[data-services]");
   const projectGrid = document.querySelector("[data-projects]");
@@ -20,13 +29,18 @@
   let revealObserver = null;
 
   if (serviceGrid) {
-    serviceGrid.innerHTML = take(data.services, serviceGrid).map((service) => `
-      <article class="service-card reveal">
-        <span></span>
+    const featuredOnly = serviceGrid.getAttribute("data-featured") === "true";
+    const sourceServices = featuredOnly ? data.services.filter((service) => service.featured) : data.services;
+    const services = take(sourceServices.length ? sourceServices : data.services, serviceGrid);
+    serviceGrid.innerHTML = services.map((service, index) => `
+      <article class="service-card reveal ${featuredOnly ? "featured-service-card" : ""}" style="--reveal-delay:${index * 90}ms">
+        ${renderServiceIcon(index)}
+        <span class="service-number">${String(index + 1).padStart(2, "0")}</span>
         <div class="card-meta">${service.category || "Topografia"} / ${service.metric || "QA/QC"}</div>
         <h3>${service.title}</h3>
+        <i></i>
         <p>${service.summary}</p>
-        <a class="text-link" href="${basePath}servicios/${service.slug}/">Ver servicio</a>
+        <a class="service-card-link" href="${basePath}servicios/${service.slug}/" aria-label="Ver servicio ${service.title}">-></a>
       </article>
     `).join("");
   }
