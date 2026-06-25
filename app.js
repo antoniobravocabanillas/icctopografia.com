@@ -82,6 +82,7 @@
   }
 
   if (storeRoot) initStore(storeRoot);
+  initCommitmentScroll();
 
   const revealItems = Array.from(document.querySelectorAll(".reveal, .service-card, .project-card, .product-card, .process-item"));
   revealObserver = new IntersectionObserver((entries) => {
@@ -305,5 +306,50 @@
     if (!revealObserver) return;
     const freshItems = Array.from(document.querySelectorAll(".reveal:not(.is-visible)"));
     freshItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  function initCommitmentScroll() {
+    const section = document.querySelector("[data-commitment-scroll]");
+    if (!section) return;
+    const cards = Array.from(section.querySelectorAll(".commitment-card"));
+    const progress = section.querySelector(".commitment-progress span");
+    const canAnimate = window.matchMedia("(min-width: 1181px)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!canAnimate || cards.length < 2) {
+      section.classList.add("is-static-commitment");
+      cards.forEach((card) => card.classList.add("is-active"));
+      if (progress) progress.style.width = "100%";
+      return;
+    }
+
+    let activeIndex = -1;
+    let tickingCommitment = false;
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const setActive = (index) => {
+      if (index === activeIndex) return;
+      activeIndex = index;
+      cards.forEach((card, cardIndex) => {
+        card.classList.toggle("is-active", cardIndex === index);
+        card.classList.toggle("is-previous", cardIndex < index);
+      });
+    };
+    const update = () => {
+      const rect = section.getBoundingClientRect();
+      const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+      const raw = clamp(-rect.top / scrollable, 0, 1);
+      const index = clamp(Math.floor(raw * cards.length), 0, cards.length - 1);
+      setActive(index);
+      section.style.setProperty("--commitment-progress", String((index + 1) / cards.length));
+      if (progress) progress.style.width = `${((index + 1) / cards.length) * 100}%`;
+      tickingCommitment = false;
+    };
+    const requestUpdate = () => {
+      if (tickingCommitment) return;
+      tickingCommitment = true;
+      window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
   }
 })();
