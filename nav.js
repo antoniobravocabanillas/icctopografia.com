@@ -30,48 +30,12 @@
     });
   }
 
-  function initAccountMenu() {
+  function initAccountLinks() {
     document.querySelectorAll(".account-link").forEach((link) => {
-      const nav = link.closest("nav");
-      if (!nav || link.closest(".account-control")) return;
-
-      const href = link.getAttribute("href") || "./cuenta/";
-      const active = link.classList.contains("is-active");
-      const control = document.createElement("div");
-      control.className = "account-control";
-      link.parentNode.insertBefore(control, link);
-      control.appendChild(link);
-
-      link.setAttribute("role", "button");
-      link.setAttribute("aria-haspopup", "true");
-      link.setAttribute("aria-expanded", "false");
-      link.innerHTML = "<span>Cuenta</span>";
-
-      const menu = document.createElement("div");
-      menu.className = "account-menu";
-      menu.innerHTML = `
-        <a class="account-menu-primary" href="${href}">${active ? "Ver portal" : "Ingresar / registrarse"}</a>
-        <a href="https://mail.zoho.com/zm/" target="_blank" rel="noopener noreferrer">Email corporativo</a>
-      `;
-      control.appendChild(menu);
-
-      const close = () => {
-        control.classList.remove("is-open");
-        link.setAttribute("aria-expanded", "false");
-      };
-      const toggle = (event) => {
-        event.preventDefault();
-        const open = control.classList.toggle("is-open");
-        link.setAttribute("aria-expanded", String(open));
-      };
-
-      link.addEventListener("click", toggle);
-      document.addEventListener("click", (event) => {
-        if (!control.contains(event.target)) close();
-      });
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") close();
-      });
+      if (!link.querySelector("span")) link.innerHTML = "<span>Cuenta cliente</span>";
+      link.removeAttribute("role");
+      link.removeAttribute("aria-haspopup");
+      link.removeAttribute("aria-expanded");
     });
   }
 
@@ -86,12 +50,12 @@
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
       initMobileNav();
-      initAccountMenu();
+      initAccountLinks();
       initScrollState();
     });
   } else {
     initMobileNav();
-    initAccountMenu();
+    initAccountLinks();
     initScrollState();
   }
 })();
