@@ -29,31 +29,40 @@
   function renderAccess(message) {
     return `
       <section class="account-hero">
+        <div class="account-mark" aria-hidden="true"></div>
         <div class="container account-grid">
-          <div>
+          <div class="account-intro">
             <p class="eyebrow">Cuenta ICC</p>
             <h1>Portal del cliente topografico</h1>
-            <p>Ingresa para revisar tus cotizaciones guardadas, datos de contacto y solicitudes creadas desde la web.</p>
+            <p>Ingresa para gestionar cotizaciones, contactos y solicitudes.</p>
+            <span></span>
           </div>
-          <div class="account-panel">
+          <div class="account-panel account-flip-panel" data-account-panel>
             ${message ? `<div class="account-alert">${message}</div>` : ""}
             <div class="account-tabs" role="tablist">
-              <button class="is-active" type="button" data-account-tab="login">Ingresar</button>
+              <button class="is-active" type="button" data-account-tab="login">Iniciar sesion</button>
               <button type="button" data-account-tab="register">Registrarse</button>
             </div>
-            <form class="account-form is-active" data-account-login>
-              <input name="email" type="email" placeholder="Correo" required />
-              <input name="password" type="password" placeholder="Contrasena" required />
-              <button type="submit">Ingresar a mi cuenta</button>
-            </form>
-            <form class="account-form" data-account-register>
-              <input name="name" placeholder="Nombre y apellido" required />
-              <input name="company" placeholder="Empresa" />
-              <input name="phone" placeholder="Telefono / WhatsApp" />
-              <input name="email" type="email" placeholder="Correo" required />
-              <input name="password" type="password" placeholder="Contrasena" required />
-              <button type="submit">Crear cuenta</button>
-            </form>
+            <div class="account-card-shell">
+              <div class="account-card-inner">
+                <form class="account-form account-card-face account-card-front is-active" data-account-login>
+                  <input name="email" type="email" placeholder="Correo o usuario" required />
+                  <input name="password" type="password" placeholder="Contrasena" required />
+                  <button type="submit">Ingresar</button>
+                  <div class="account-divider"><span>o</span></div>
+                  <a class="corporate-mail-button" href="https://mail.zoho.com/zm/" target="_blank" rel="noopener noreferrer">Email corporativo</a>
+                </form>
+                <form class="account-form account-card-face account-card-back" data-account-register>
+                  <input name="name" placeholder="Nombre y apellido" required />
+                  <input name="company" placeholder="Empresa" />
+                  <input name="phone" placeholder="Telefono / WhatsApp" />
+                  <input name="email" type="email" placeholder="Correo" required />
+                  <input name="password" type="password" placeholder="Contrasena" required />
+                  <button type="submit">Crear cuenta</button>
+                  <a class="corporate-mail-button" href="https://mail.zoho.com/zm/" target="_blank" rel="noopener noreferrer">Email corporativo</a>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -103,6 +112,7 @@
       button.addEventListener("click", () => {
         const target = button.dataset.accountTab;
         root.querySelectorAll("[data-account-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
+        root.querySelector("[data-account-panel]")?.classList.toggle("is-register", target === "register");
         root.querySelector("[data-account-login]")?.classList.toggle("is-active", target === "login");
         root.querySelector("[data-account-register]")?.classList.toggle("is-active", target === "register");
       });
