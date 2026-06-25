@@ -32,7 +32,13 @@
 
   function initAccountLinks() {
     document.querySelectorAll(".account-link").forEach((link) => {
-      if (!link.querySelector("span")) link.innerHTML = "<span>Cuenta cliente</span>";
+      link.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21a8 8 0 0 0-16 0" />
+          <circle cx="12" cy="8" r="4" />
+        </svg>
+        <span>Cuenta cliente</span>
+      `;
       link.removeAttribute("role");
       link.removeAttribute("aria-haspopup");
       link.removeAttribute("aria-expanded");
