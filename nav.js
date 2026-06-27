@@ -53,15 +53,37 @@
     window.addEventListener("scroll", update, { passive: true });
   }
 
+  function initLanguageMenus() {
+    document.querySelectorAll(".language-switch").forEach((switcher) => {
+      const button = switcher.querySelector("button");
+      if (!button) return;
+      button.setAttribute("aria-expanded", "false");
+
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const isOpen = switcher.classList.toggle("is-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      document.addEventListener("click", (event) => {
+        if (switcher.contains(event.target)) return;
+        switcher.classList.remove("is-open");
+        button.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
       initMobileNav();
       initAccountLinks();
+      initLanguageMenus();
       initScrollState();
     });
   } else {
     initMobileNav();
     initAccountLinks();
+    initLanguageMenus();
     initScrollState();
   }
 })();
