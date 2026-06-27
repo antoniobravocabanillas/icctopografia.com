@@ -313,10 +313,12 @@
     if (!section) return;
     const cards = Array.from(section.querySelectorAll(".commitment-card"));
     const progress = section.querySelector(".commitment-progress span");
+    const steps = Array.from(section.querySelectorAll("[data-commitment-step]"));
     const canAnimate = window.matchMedia("(min-width: 1181px)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!canAnimate || cards.length < 2) {
       section.classList.add("is-static-commitment");
       cards.forEach((card) => card.classList.add("is-active"));
+      steps.forEach((step) => step.classList.remove("is-active"));
       if (progress) progress.style.width = "100%";
       return;
     }
@@ -331,6 +333,9 @@
         card.classList.toggle("is-active", cardIndex === index);
         card.classList.toggle("is-previous", cardIndex < index);
       });
+      steps.forEach((step, stepIndex) => {
+        step.classList.toggle("is-active", stepIndex === index);
+      });
     };
     const update = () => {
       const rect = section.getBoundingClientRect();
@@ -338,6 +343,7 @@
       const raw = clamp(-rect.top / scrollable, 0, 1);
       const index = clamp(Math.round(raw * (cards.length - 1)), 0, cards.length - 1);
       setActive(index);
+      section.style.setProperty("--commitment-active-index", String(index));
       section.style.setProperty("--commitment-progress", String((index + 1) / cards.length));
       if (progress) progress.style.width = `${((index + 1) / cards.length) * 100}%`;
       tickingCommitment = false;
@@ -349,6 +355,14 @@
     };
 
     update();
+    steps.forEach((step) => {
+      step.addEventListener("click", () => {
+        const stepIndex = Number(step.dataset.commitmentStep || 0);
+        const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+        const target = section.offsetTop + scrollable * (stepIndex / Math.max(1, cards.length - 1));
+        window.scrollTo({ top: target, behavior: "smooth" });
+      });
+    });
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
   }
