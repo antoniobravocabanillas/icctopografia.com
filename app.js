@@ -33,15 +33,15 @@
     const sourceServices = featuredOnly ? data.services.filter((service) => service.featured) : data.services;
     const services = take(sourceServices.length ? sourceServices : data.services, serviceGrid);
     serviceGrid.innerHTML = services.map((service, index) => `
-      <article class="service-card reveal ${featuredOnly ? "featured-service-card" : ""}" style="--reveal-delay:${index * 90}ms">
+      <a class="service-card reveal ${featuredOnly ? "featured-service-card" : ""}" href="${basePath}servicios/${service.slug}/" style="--reveal-delay:${index * 90}ms" aria-label="Ver servicio ${service.title}">
         ${renderServiceIcon(index)}
         <span class="service-number">${String(index + 1).padStart(2, "0")}</span>
-        <div class="card-meta">${service.category || "Topografia"} / ${service.metric || "QA/QC"}</div>
+        <div class="card-meta">${service.category || "Topografia"} / ${service.metric || "Revision"}</div>
         <h3>${service.title}</h3>
         <i></i>
         <p>${service.summary}</p>
-        <a class="service-card-link" href="${basePath}servicios/${service.slug}/" aria-label="Ver servicio ${service.title}">-></a>
-      </article>
+        <span class="service-card-link">Ver servicio</span>
+      </a>
     `).join("");
   }
 

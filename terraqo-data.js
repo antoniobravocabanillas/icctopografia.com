@@ -1,6 +1,6 @@
 window.TERRAQO_DATA = {
   "generatedAt": "2026-06-23T22:36:05.781Z",
-  "source": "Terraqo Workspace / Prisma",
+  "source": "Ecosistema ICC / Terraqo",
   "services": [
     {
       "slug": "gestion-de-proyectos-geomaticos",
@@ -24,7 +24,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Coordinacion integral de estudios topograficos en proyectos EPC y PPP.",
@@ -66,7 +66,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Formacion para constructoras y municipalidades en instrumentos, software y normativa.",
@@ -107,7 +107,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Segunda opinion tecnica sobre levantamientos, catastros y planos de terceros.",
@@ -148,7 +148,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Informes tecnicos para procesos judiciales, arbitrajes y organismos del Estado.",
@@ -189,7 +189,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Auditorias de control de calidad topografica para constructoras y desarrolladores.",
@@ -230,7 +230,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Levantamientos para plantas, fundos, caminos internos y drenaje.",
@@ -271,7 +271,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Soporte topografico para inventarios, certificacion y conservacion.",
@@ -312,7 +312,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Georreferenciacion de poligonos ambientales y areas protegidas.",
@@ -353,7 +353,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Pendientes, trazos y control para infraestructura hidraulica.",
@@ -394,7 +394,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Control de deformaciones y puntos de monitoreo de alta precision.",
@@ -435,7 +435,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Marcacion, seguimiento y evidencia para operacion minera.",
@@ -476,7 +476,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Volumenes, control de avance y soporte topografico minero.",
@@ -517,7 +517,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Delimitacion y control georreferenciado de concesiones.",
@@ -558,7 +558,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Levantamientos y replanteos para infraestructura sanitaria y electrica.",
@@ -599,7 +599,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Informacion de campo para diseno geometrico y control vial.",
@@ -640,7 +640,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Topografia para proyectos MTC, gobiernos regionales e infraestructura civil.",
@@ -681,7 +681,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Informes para procesos judiciales, arbitrajes y resolucion de linderos.",
@@ -722,7 +722,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Actualizacion de bases graficas, numeracion predial y planos de zonificacion.",
@@ -763,7 +763,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Subdivision, lotizacion y habilitacion urbana.",
@@ -804,7 +804,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Planos para SUNARP, georreferenciacion WGS84/PSAD56 y tramites COFOPRI.",
@@ -845,7 +845,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Predios, manzanas, comunidades campesinas y nativas.",
@@ -886,7 +886,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Pendientes, cuencas y drenaje para habilitaciones urbanas y proyectos viales.",
@@ -927,7 +927,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Seguimiento de deformaciones en cortes, terraplenes y edificaciones vecinas.",
@@ -968,7 +968,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Calculo de volumenes de corte y relleno, balance de tierras con drone y software.",
@@ -1009,7 +1009,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Ensayos DPL, SPT, granulometria, capacidad portante y estudios de campo.",
@@ -1050,7 +1050,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Planos digitales certificados, informes descargables, modelos en la nube y monitoreo remoto.",
@@ -1091,7 +1091,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Analisis espacial, mapas tematicos e integracion con sistemas municipales y de inversion publica.",
@@ -1132,7 +1132,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Transformacion de datos de campo en modelos digitales para arquitectura, ingenieria y operacion.",
@@ -1173,7 +1173,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Ortomosaicos, nubes de puntos densas, MDE y cubicacion volumetrica de stockpiles.",
@@ -1214,7 +1214,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Replanteo estructural, control de ejes, niveles y alineamientos durante la ejecucion.",
@@ -1255,7 +1255,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Levantamientos de rios, reservorios y lagunas para proyectos hidraulicos y mineros.",
@@ -1296,7 +1296,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Captura de realidad de alta densidad para gemelos digitales, plantas industriales y patrimonio historico.",
@@ -1337,7 +1337,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Puntos de control, redes geodesicas de alta precision y posicionamiento NTRIP.",
@@ -1378,7 +1378,7 @@ window.TERRAQO_DATA = {
       "process": [
         "Diagnostico de alcance",
         "Plan de campo",
-        "Ejecucion y control QA/QC",
+        "Medicion, revision y control",
         "Entrega tecnica"
       ],
       "caseStudy": "Levantamientos para obras civiles, mineria y catastro con estacion total robotizada.",
@@ -1445,8 +1445,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": true
@@ -1497,8 +1497,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": true
@@ -1549,8 +1549,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": true
@@ -1601,8 +1601,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": true
@@ -1653,8 +1653,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1705,8 +1705,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1757,8 +1757,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1809,8 +1809,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1861,8 +1861,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1913,8 +1913,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -1965,8 +1965,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -2017,8 +2017,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -2069,8 +2069,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -2122,8 +2122,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -2174,8 +2174,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false
@@ -2226,8 +2226,8 @@ window.TERRAQO_DATA = {
       ],
       "progress": [
         [
-          "Registro Terraqo",
-          "Caso migrado desde la base operativa de Terraqo Workspace."
+          "Registro ICC",
+          "Caso integrado al ecosistema ICC y administrado con soporte tecnologico Terraqo."
         ]
       ],
       "featured": false

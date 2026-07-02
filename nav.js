@@ -53,6 +53,11 @@
     window.addEventListener("scroll", update, { passive: true });
   }
 
+  function cleanLegacyHomeHash() {
+    if (window.location.hash !== "#inicio") return;
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+  }
+
   function initLanguageMenus() {
     document.querySelectorAll(".language-switch").forEach((switcher) => {
       const button = switcher.querySelector("button");
@@ -75,12 +80,14 @@
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
+      cleanLegacyHomeHash();
       initMobileNav();
       initAccountLinks();
       initLanguageMenus();
       initScrollState();
     });
   } else {
+    cleanLegacyHomeHash();
     initMobileNav();
     initAccountLinks();
     initLanguageMenus();
