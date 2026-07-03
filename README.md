@@ -36,3 +36,13 @@ Sitio publico para `icctopografia.com`, preparado para despliegue estatico en Ne
 - Build command: vacio.
 - Publish directory: `.`
 - Dominio previsto: `icctopografia.com`.
+
+## Desarrollo Local
+
+Este sitio se sirve como HTML/CSS/JS estatico. Para ver la misma version que se publica en Netlify:
+
+```bash
+npm run dev
+```
+
+Abre `http://127.0.0.1:3000`. La carpeta `app/` pertenece a un scaffold Next experimental y no se usa para la version publica.

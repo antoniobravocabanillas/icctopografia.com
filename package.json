@@ -1,0 +1,14 @@
+{
+  "name": "icctopografia-com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio publico estatico de ICC Topografia para icctopografia.com.",
+  "scripts": {
+    "dev": "node scripts/dev-static.js",
+    "start": "node scripts/dev-static.js",
+    "check": "node --check app.js && node --check nav.js && node --check account.js && node --check quote-account.js && node --check detail.js && node --check terraqo-data.js && node --check scripts/dev-static.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
