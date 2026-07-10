@@ -10,7 +10,7 @@ export const siteConfig = {
 export const mainNavigation = [
   { label: "Inicio", href: "/" },
   { label: "Servicios", href: "/servicios/" },
-  { label: "Casos de exito", href: "/casos-exito/" },
+  { label: "Proyectos", href: "/casos-exito/" },
   { label: "Metodo ICC", href: "/metodo-icc/" },
   { label: "Nosotros", href: "/nosotros/" },
   { label: "Tienda tecnica", href: "/tienda/" },
