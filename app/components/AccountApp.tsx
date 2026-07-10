@@ -1,22 +1,28 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-
-type Account = {
-  id: string;
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  password: string;
-  quotes: Array<{ date?: string; service?: string; scope?: string; status?: string }>;
-  createdAt: string;
-};
+import {
+  adminFields,
+  clientFields,
+  portalProfiles,
+  portalTrustMessages,
+  professionalFields,
+  type PortalField,
+  type PortalRole,
+} from "../lib/portal-data";
+import PortalAccessCards from "./portal/PortalAccessCards";
+import PortalDashboard from "./portal/PortalDashboard";
+import PortalFooterNote from "./portal/PortalFooterNote";
+import PortalIntro from "./portal/PortalIntro";
+import PortalLoginForm from "./portal/PortalLoginForm";
+import PortalProfileSelector from "./portal/PortalProfileSelector";
+import PortalRegisterForm from "./portal/PortalRegisterForm";
+import type { PortalAccount, PortalMode } from "./portal/PortalTypes";
 
 const storageKey = "icc_topografia_accounts";
 const sessionKey = "icc_topografia_session";
 
-const readAccounts = (): Account[] => {
+const readAccounts = (): PortalAccount[] => {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(localStorage.getItem(storageKey) || "[]");
@@ -24,14 +30,22 @@ const readAccounts = (): Account[] => {
     return [];
   }
 };
-const writeAccounts = (accounts: Account[]) => localStorage.setItem(storageKey, JSON.stringify(accounts));
+
+const writeAccounts = (accounts: PortalAccount[]) => localStorage.setItem(storageKey, JSON.stringify(accounts));
 const normalizeEmail = (value: FormDataEntryValue | null) => String(value || "").trim().toLowerCase();
 
+const fieldsByRole: Record<PortalRole, PortalField[]> = {
+  client: clientFields,
+  professional: professionalFields,
+  admin: adminFields,
+};
+
 export default function AccountApp() {
-  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [accounts, setAccounts] = useState<PortalAccount[]>([]);
   const [session, setSessionState] = useState("");
   const [message, setMessage] = useState("");
-  const [register, setRegister] = useState(false);
+  const [mode, setMode] = useState<PortalMode>("login");
+  const [selectedRole, setSelectedRole] = useState<PortalRole>("client");
 
   useEffect(() => {
     setAccounts(readAccounts());
@@ -39,10 +53,20 @@ export default function AccountApp() {
   }, []);
 
   const account = accounts.find((item) => item.email === session);
-
   const setSession = (email: string) => {
     localStorage.setItem(sessionKey, email);
     setSessionState(email);
+  };
+
+  const selectRole = (role: PortalRole) => {
+    setSelectedRole(role);
+    setMode(role === "admin" ? "login" : "register");
+    setMessage(
+      role === "admin"
+        ? "El acceso administrador requiere una cuenta autorizada por ICC Topografia."
+        : `Completa el registro para ${role === "client" ? "cliente" : "profesional tecnico"}.`,
+    );
+    window.requestAnimationFrame(() => document.getElementById("portal-access")?.scrollIntoView({ behavior: "smooth" }));
   };
 
   const login = (event: FormEvent<HTMLFormElement>) => {
@@ -51,137 +75,155 @@ export default function AccountApp() {
     const email = normalizeEmail(form.get("email"));
     const password = String(form.get("password") || "");
     const found = accounts.find((item) => item.email === email && item.password === password);
+
     if (!found) {
-      setMessage("Credenciales no encontradas. Revisa tu correo o registrate.");
+      setMessage("El correo ingresado no esta registrado o la contrasena es incorrecta.");
       return;
     }
+
+    if (found.status === "pending") {
+      setMessage("Tu cuenta esta pendiente de validacion.");
+      return;
+    }
+
     setSession(email);
-    setMessage("Sesion iniciada correctamente.");
+    setMessage("Bienvenido al Portal Terraqo.");
   };
 
   const create = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const email = normalizeEmail(form.get("email"));
+    const password = String(form.get("password") || "");
+    const confirmPassword = String(form.get("confirmPassword") || "");
+
+    if (!email || !password) {
+      setMessage("Completa los campos obligatorios para continuar.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setMessage("La confirmacion de contrasena no coincide.");
+      return;
+    }
+
     if (accounts.some((item) => item.email === email)) {
       setMessage("Ya existe una cuenta con ese correo.");
       return;
     }
-    const accountData: Account = {
-      id: `icc-${Date.now()}`,
+
+    if (selectedRole === "admin") {
+      setMessage("Este tipo de acceso requiere autorizacion del equipo administrador.");
+      return;
+    }
+
+    const profile = Object.fromEntries(
+      fieldsByRole[selectedRole]
+        .filter((field) => field.name !== "password" && field.name !== "confirmPassword")
+        .map((field) => [field.name, String(form.get(field.name) || "").trim()]),
+    );
+
+    const accountData: PortalAccount = {
+      id: `terraqo-${Date.now()}`,
+      role: selectedRole,
+      status: selectedRole === "professional" ? "pending" : "active",
       name: String(form.get("name") || "").trim(),
       company: String(form.get("company") || "").trim(),
       phone: String(form.get("phone") || "").trim(),
       email,
-      password: String(form.get("password") || ""),
+      password,
+      profile,
       quotes: [],
       createdAt: new Date().toISOString(),
     };
+
     const next = accounts.concat(accountData);
     writeAccounts(next);
     setAccounts(next);
+
+    if (accountData.status === "pending") {
+      setMode("login");
+      setMessage("Tus datos fueron registrados. Tu cuenta profesional queda pendiente de validacion.");
+      return;
+    }
+
     setSession(email);
-    setMessage("Cuenta creada. Ya puedes guardar solicitudes y cotizaciones.");
+    setMessage("Cuenta creada correctamente. Bienvenido al Portal Terraqo.");
   };
 
   if (account) {
     return (
-      <section className="account-hero">
-        <div className="container account-grid">
-          <div>
-            <p className="eyebrow">Perfil cliente</p>
-            <h1>{account.name || "Cliente ICC"}</h1>
-            <p>
-              {account.company || "Empresa pendiente"} - {account.email}
-            </p>
-            <div className="account-actions">
-              <a className="button primary" href="/contacto/">
-                Nueva cotizacion
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  localStorage.removeItem(sessionKey);
-                  setSessionState("");
-                  setMessage("Sesion cerrada.");
-                }}
-              >
-                Cerrar sesion
-              </button>
-            </div>
-          </div>
-          <div className="account-panel">
-            {message ? <div className="account-alert">{message}</div> : null}
-            <p className="eyebrow">Historial</p>
-            <h2>{account.quotes.length} solicitudes</h2>
-            <div className="quote-history">
-              {account.quotes.length ? (
-                account.quotes.map((quote, index) => (
-                  <article key={index}>
-                    <span>{quote.date || "Sin fecha"}</span>
-                    <strong>{quote.service || "Servicio topografico"}</strong>
-                    <p>{quote.scope || "Solicitud registrada desde la web."}</p>
-                    <small>{quote.status || "Recibida"}</small>
-                  </article>
-                ))
-              ) : (
-                <p className="muted">Aun no hay cotizaciones asociadas a esta cuenta.</p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      <>
+        <PortalDashboard
+          account={account}
+          message={message}
+          onLogout={() => {
+            localStorage.removeItem(sessionKey);
+            setSessionState("");
+            setMessage("Sesion cerrada.");
+          }}
+        />
+        <PortalFooterNote />
+      </>
     );
   }
 
   return (
-    <section className="account-hero">
-      <div className="account-mark" aria-hidden="true" />
-      <div className="container account-grid">
-        <div className="account-intro">
-          <p className="eyebrow">ICC Topografia</p>
-          <h1>Portal Terraqo</h1>
-          <p>Ingresa para gestionar cotizaciones, contactos y solicitudes.</p>
-          <span />
-        </div>
-        <div className={`account-panel account-flip-panel${register ? " is-register" : ""}`}>
-          {message ? <div className="account-alert">{message}</div> : null}
-          <div className="account-tabs" role="tablist">
-            <button className={!register ? "is-active" : ""} type="button" onClick={() => setRegister(false)}>
-              Iniciar sesion
-            </button>
-            <button className={register ? "is-active" : ""} type="button" onClick={() => setRegister(true)}>
-              Registrarse
-            </button>
-          </div>
-          <div className="account-card-shell">
-            <div className="account-card-inner">
-              <form className={`account-form account-card-face account-card-front${!register ? " is-active" : ""}`} onSubmit={login}>
-                <input name="email" type="email" placeholder="Correo o usuario" required />
-                <input name="password" type="password" placeholder="Contrasena" required />
-                <button type="submit">Ingresar</button>
-                <div className="account-divider">
-                  <span>o</span>
-                </div>
-                <a className="corporate-mail-button" href="https://mail.zoho.com/zm/" target="_blank" rel="noopener noreferrer">
-                  Email corporativo
-                </a>
-              </form>
-              <form className={`account-form account-card-face account-card-back${register ? " is-active" : ""}`} onSubmit={create}>
-                <input name="name" placeholder="Nombre y apellido" required />
-                <input name="company" placeholder="Empresa" />
-                <input name="phone" placeholder="Telefono / WhatsApp" />
-                <input name="email" type="email" placeholder="Correo" required />
-                <input name="password" type="password" placeholder="Contrasena" required />
-                <button type="submit">Crear cuenta</button>
-                <a className="corporate-mail-button" href="https://mail.zoho.com/zm/" target="_blank" rel="noopener noreferrer">
-                  Email corporativo
-                </a>
-              </form>
+    <>
+      <section className="account-hero portal-hero" id="portal-access">
+        <div className="account-mark" aria-hidden="true" />
+        <div className="portal-grid-overlay" aria-hidden="true" />
+        <div className="container account-grid portal-account-grid">
+          <PortalIntro />
+          <div className="account-panel portal-panel">
+            {message ? <div className="account-alert">{message}</div> : null}
+            <div className="account-tabs" role="tablist" aria-label="Ingreso y registro Portal Terraqo">
+              <button className={mode === "login" ? "is-active" : ""} type="button" onClick={() => setMode("login")}>
+                Iniciar sesion
+              </button>
+              <button
+                className={mode === "register" ? "is-active" : ""}
+                type="button"
+                onClick={() => {
+                  setMode("register");
+                  if (selectedRole === "admin") setSelectedRole("client");
+                }}
+              >
+                Crear cuenta
+              </button>
             </div>
+
+            {mode === "login" ? (
+              <PortalLoginForm onSubmit={login} onRegisterClick={() => setMode("register")} />
+            ) : (
+              <>
+                <PortalProfileSelector profiles={portalProfiles} activeRole={selectedRole} onSelect={setSelectedRole} />
+                <PortalRegisterForm
+                  role={selectedRole}
+                  fields={fieldsByRole[selectedRole]}
+                  onSubmit={create}
+                  onAdminAccess={() => {
+                    setMode("login");
+                    setMessage("Ingresa con tu correo corporativo autorizado.");
+                  }}
+                />
+              </>
+            )}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <PortalAccessCards profiles={portalProfiles} onSelect={selectRole} />
+
+      <section className="portal-trust-section">
+        <div className="container portal-trust-grid">
+          {portalTrustMessages.map((trust) => (
+            <p key={trust}>{trust}</p>
+          ))}
+        </div>
+      </section>
+
+      <PortalFooterNote />
+    </>
   );
 }
