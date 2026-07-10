@@ -20,10 +20,4 @@ Estrategia Digital Ecosistema Icc.pdf
 05_*.md
 06_*.md
 
-# Experimental Next scaffold not used by the first Netlify static deploy.
-app/
-package-lock.json
 pnpm-lock.yaml
-next-env.d.ts
-next.config.ts
-tsconfig.json
