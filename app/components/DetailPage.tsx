@@ -17,7 +17,6 @@ function QuoteSection({ title }: { title: string }) {
           <p>Cuentanos la ubicacion, el plazo y el alcance esperado. Te responderemos con una ruta clara de atencion.</p>
         </div>
         <form className="quote-form" name="cotizacion" action="mailto:contacto@icctopografia.com" method="post" encType="text/plain" data-account-redirect="/cuenta/">
-          <input type="hidden" name="form-name" value="cotizacion" />
           <input name="nombre" placeholder="Nombre y apellido" required />
           <input name="empresa" placeholder="Empresa" />
           <input name="telefono" placeholder="Telefono / WhatsApp" required />

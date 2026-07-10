@@ -15,8 +15,7 @@ export default function ContactPage() {
             </a>
           </p>
         </div>
-        <form className="quote-form" name="cotizacion" action="mailto:cotizaciones@icctopografia.com" method="post" encType="text/plain" data-netlify="true" data-account-redirect="/cuenta/">
-          <input type="hidden" name="form-name" value="cotizacion" />
+        <form className="quote-form" name="cotizacion" action="mailto:cotizaciones@icctopografia.com" method="post" encType="text/plain" data-account-redirect="/cuenta/">
           <input name="nombre" placeholder="Nombre y apellido" required />
           <input name="empresa" placeholder="Empresa" />
           <input name="telefono" placeholder="Telefono / WhatsApp" required />
