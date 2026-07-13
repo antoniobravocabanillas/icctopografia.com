@@ -1,6 +1,6 @@
-import { clients } from "../lib/home-data";
+import { clients as fallbackClients } from "../lib/home-data";
 
-export default function ClientsSection() {
+export default function ClientsSection({ clients = fallbackClients }: { clients?: typeof fallbackClients }) {
   return (
     <section className="clients-section">
       <div className="clients-backdrop" aria-hidden="true" />

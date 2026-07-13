@@ -34,6 +34,19 @@ const readAccounts = (): PortalAccount[] => {
 const writeAccounts = (accounts: PortalAccount[]) => localStorage.setItem(storageKey, JSON.stringify(accounts));
 const normalizeEmail = (value: FormDataEntryValue | null) => String(value || "").trim().toLowerCase();
 
+async function postJson(path: string, payload: unknown) {
+  const response = await fetch(path, {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data?.error || data?.message || "No se pudo completar la operacion.");
+  }
+  return data;
+}
+
 const fieldsByRole: Record<PortalRole, PortalField[]> = {
   client: clientFields,
   professional: professionalFields,
@@ -90,7 +103,7 @@ export default function AccountApp() {
     setMessage("Bienvenido al Portal Terraqo.");
   };
 
-  const create = (event: FormEvent<HTMLFormElement>) => {
+  const create = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const email = normalizeEmail(form.get("email"));
@@ -137,6 +150,31 @@ export default function AccountApp() {
       createdAt: new Date().toISOString(),
     };
 
+    try {
+      const registration = await postJson("/api/terraqo/register", {
+        accountType: selectedRole,
+        name: accountData.name,
+        email,
+        password,
+        company: accountData.company,
+        document: accountData.profile.document,
+        phone: accountData.phone,
+        roleTitle: accountData.profile.roleTitle,
+        specialty: accountData.profile.specialty,
+        city: accountData.profile.city,
+        yearsExperience: accountData.profile.yearsExperience ? Number(accountData.profile.yearsExperience) : undefined,
+        equipment: accountData.profile.equipment,
+        software: accountData.profile.software,
+        portfolioUrl: accountData.profile.portfolioUrl,
+      });
+
+      accountData.id = registration?.id || accountData.id;
+      accountData.status = registration?.status === "pending_approval" ? "pending" : accountData.status;
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "No se pudo crear la cuenta en Portal Terraqo.");
+      return;
+    }
+
     const next = accounts.concat(accountData);
     writeAccounts(next);
     setAccounts(next);
@@ -157,6 +195,31 @@ export default function AccountApp() {
         <PortalDashboard
           account={account}
           message={message}
+          onCreateRequest={async (request) => {
+            try {
+              const created = await postJson("/api/terraqo/quote", {
+                name: account.name,
+                email: account.email,
+                phone: account.phone,
+                company: account.company,
+                service: request.service,
+                location: request.location,
+                scope: request.scope,
+              });
+              request.id = created?.id || request.id;
+            } catch (error) {
+              setMessage(error instanceof Error ? error.message : "No se pudo registrar la solicitud en Portal Terraqo.");
+              return false;
+            }
+
+            const next = accounts.map((item) =>
+              item.email === account.email ? { ...item, quotes: [request, ...item.quotes] } : item,
+            );
+            writeAccounts(next);
+            setAccounts(next);
+            setMessage("Solicitud enviada con exito. El equipo ICC Topografia la revisara para cotizar.");
+            return true;
+          }}
           onLogout={() => {
             localStorage.removeItem(sessionKey);
             setSessionState("");

@@ -1,14 +1,18 @@
 import DetailPage from "../../components/DetailPage";
-import { terraqoData } from "../../lib/terraqo-data";
+import { getPublicContent } from "../../lib/public-content";
 import { cleanArray, cleanText } from "../../lib/text";
 
-export function generateStaticParams() {
-  return terraqoData.products.map((product) => ({ slug: product.slug }));
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const content = await getPublicContent();
+  return content.products.map((product) => ({ slug: product.slug }));
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = terraqoData.products.find((item) => item.slug === slug);
+  const content = await getPublicContent();
+  const product = content.products.find((item) => item.slug === slug);
   const cleanProduct = product
     ? {
         ...product,

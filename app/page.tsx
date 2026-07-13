@@ -7,17 +7,20 @@ import MethodSection from "./components/MethodSection";
 import ProjectsSection from "./components/ProjectsSection";
 import EquipmentSection from "./components/EquipmentSection";
 import ContactForm from "./components/ContactForm";
+import { getHomeContent } from "./lib/public-content";
 
-export default function Home() {
+export default async function Home() {
+  const content = await getHomeContent();
+
   return (
     <>
       <Hero />
-      <ClientsSection />
+      <ClientsSection clients={content.clients} />
       <AboutSection />
-      <ServicesSection />
+      <ServicesSection featuredServices={content.featuredServices as any} />
       <CommitmentSection />
       <MethodSection />
-      <ProjectsSection />
+      <ProjectsSection featuredProjects={content.featuredProjects as any} />
       <EquipmentSection />
       <ContactForm />
     </>

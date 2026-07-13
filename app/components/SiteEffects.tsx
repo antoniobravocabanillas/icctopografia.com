@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function SiteEffects() {
+  const pathname = usePathname();
+
   useEffect(() => {
-    const revealItems = Array.from(
-      document.querySelectorAll<HTMLElement>(".reveal, .service-card, .project-card, .product-card, .process-item"),
-    );
+    const revealSelector = ".reveal, .service-card, .project-card, .product-card, .process-item";
+    const observed = new WeakSet<HTMLElement>();
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -18,7 +20,41 @@ export default function SiteEffects() {
       },
       { threshold: 0.16 },
     );
-    revealItems.forEach((item) => revealObserver.observe(item));
+
+    const observeReveals = (root: ParentNode = document) => {
+      root.querySelectorAll<HTMLElement>(revealSelector).forEach((item) => {
+        if (observed.has(item) || item.classList.contains("is-visible")) return;
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+          item.classList.add("is-visible");
+          return;
+        }
+        observed.add(item);
+        revealObserver.observe(item);
+      });
+    };
+
+    observeReveals();
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) return;
+          if (node.matches(revealSelector) && !observed.has(node)) {
+            const rect = node.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+              node.classList.add("is-visible");
+              return;
+            }
+            observed.add(node);
+            revealObserver.observe(node);
+          }
+          observeReveals(node);
+        });
+      });
+    });
+
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     let ticking = false;
@@ -40,9 +76,10 @@ export default function SiteEffects() {
     window.addEventListener("scroll", requestParallax, { passive: true });
     return () => {
       revealObserver.disconnect();
+      mutationObserver.disconnect();
       window.removeEventListener("scroll", requestParallax);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

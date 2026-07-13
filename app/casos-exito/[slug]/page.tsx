@@ -1,14 +1,18 @@
 import DetailPage from "../../components/DetailPage";
-import { terraqoData } from "../../lib/terraqo-data";
+import { getPublicContent } from "../../lib/public-content";
 import { cleanArray, cleanText } from "../../lib/text";
 
-export function generateStaticParams() {
-  return terraqoData.projects.map((project) => ({ slug: project.slug }));
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const content = await getPublicContent();
+  return content.projects.map((project) => ({ slug: project.slug }));
 }
 
 export default async function CaseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = terraqoData.projects.find((item) => item.slug === slug);
+  const content = await getPublicContent();
+  const project = content.projects.find((item) => item.slug === slug);
   const cleanProject = project
     ? {
         ...project,

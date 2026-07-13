@@ -1,7 +1,7 @@
 import ProjectCard from "./ProjectCard";
-import { featuredProjects } from "../lib/home-data";
+import { featuredProjects as fallbackFeaturedProjects } from "../lib/home-data";
 
-export default function ProjectsSection() {
+export default function ProjectsSection({ featuredProjects = fallbackFeaturedProjects }: { featuredProjects?: typeof fallbackFeaturedProjects }) {
   return (
     <section id="casos-exito" className="section">
       <div className="container">

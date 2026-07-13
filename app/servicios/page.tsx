@@ -1,11 +1,14 @@
 import Link from "next/link";
 import ServicesCatalog from "../components/ServicesCatalog";
+import { getPublicContent } from "../lib/public-content";
 import { categoryOrder, serviceCategoryBySlug, topographyServiceSlugs } from "../lib/service-taxonomy";
-import { terraqoData } from "../lib/terraqo-data";
 import { cleanArray, cleanText } from "../lib/text";
 
-export default function ServicesPage() {
-  const services = terraqoData.services
+export const revalidate = 300;
+
+export default async function ServicesPage() {
+  const content = await getPublicContent();
+  const services = content.services
     .filter((service) => topographyServiceSlugs.has(service.slug))
     .map((service) => ({
       ...service,

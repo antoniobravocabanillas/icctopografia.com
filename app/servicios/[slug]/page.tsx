@@ -1,15 +1,19 @@
 import DetailPage from "../../components/DetailPage";
+import { getPublicContent } from "../../lib/public-content";
 import { serviceCategoryBySlug, topographyServiceSlugs } from "../../lib/service-taxonomy";
-import { terraqoData } from "../../lib/terraqo-data";
 import { cleanArray, cleanText } from "../../lib/text";
 
-export function generateStaticParams() {
-  return terraqoData.services.filter((service) => topographyServiceSlugs.has(service.slug)).map((service) => ({ slug: service.slug }));
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const content = await getPublicContent();
+  return content.services.filter((service) => topographyServiceSlugs.has(service.slug)).map((service) => ({ slug: service.slug }));
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = topographyServiceSlugs.has(slug) ? terraqoData.services.find((item) => item.slug === slug) : undefined;
+  const content = await getPublicContent();
+  const service = topographyServiceSlugs.has(slug) ? content.services.find((item) => item.slug === slug) : undefined;
   const cleanService = service
     ? {
         ...service,

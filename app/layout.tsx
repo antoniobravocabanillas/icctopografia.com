@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SiteEffects from "./components/SiteEffects";
+import TerraqoChatEmbed from "./components/TerraqoChatEmbed";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,12 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es" data-scroll-behavior="smooth">
       <body>
         <SiteEffects />
         <Header />
         <main>{children}</main>
         <Footer />
+        <TerraqoChatEmbed />
       </body>
     </html>
   );

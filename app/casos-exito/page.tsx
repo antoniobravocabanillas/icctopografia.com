@@ -1,9 +1,12 @@
 import ProjectCard from "../components/ProjectCard";
-import { terraqoData } from "../lib/terraqo-data";
+import { getPublicContent } from "../lib/public-content";
 import { cleanText } from "../lib/text";
 
-export default function CasesPage() {
-  const projects = terraqoData.projects.map((project) => ({
+export const revalidate = 300;
+
+export default async function CasesPage() {
+  const content = await getPublicContent();
+  const projects = content.projects.map((project) => ({
     ...project,
     title: cleanText(project.title),
     sector: cleanText(project.sector),

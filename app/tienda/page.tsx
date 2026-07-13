@@ -1,9 +1,12 @@
 import StoreClient from "../components/StoreClient";
-import { terraqoData } from "../lib/terraqo-data";
+import { getPublicContent } from "../lib/public-content";
 import { cleanArray, cleanText } from "../lib/text";
 
-export default function StorePage() {
-  const products = terraqoData.products.map((product) => ({
+export const revalidate = 300;
+
+export default async function StorePage() {
+  const content = await getPublicContent();
+  const products = content.products.map((product) => ({
     ...product,
     name: cleanText(product.name),
     title: cleanText(product.title),
@@ -14,7 +17,7 @@ export default function StorePage() {
     availability: cleanText(product.availability),
     tags: cleanArray(product.tags),
   }));
-  const categories = terraqoData.categories.map((category) => ({
+  const categories = content.categories.map((category) => ({
     ...category,
     name: cleanText(category.name),
   }));

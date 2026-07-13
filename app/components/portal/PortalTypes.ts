@@ -10,7 +10,7 @@ export type PortalAccount = {
   email: string;
   password: string;
   profile: Record<string, string>;
-  quotes: Array<{ date?: string; service?: string; scope?: string; status?: string }>;
+  quotes: Array<{ id?: string; date?: string; service?: string; scope?: string; location?: string; status?: string }>;
   createdAt: string;
 };
 

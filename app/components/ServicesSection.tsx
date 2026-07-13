@@ -1,7 +1,7 @@
 import ServiceCard from "./ServiceCard";
-import { featuredServices } from "../lib/home-data";
+import { featuredServices as fallbackFeaturedServices } from "../lib/home-data";
 
-export default function ServicesSection() {
+export default function ServicesSection({ featuredServices = fallbackFeaturedServices }: { featuredServices?: typeof fallbackFeaturedServices }) {
   return (
     <section id="servicios" className="section featured-services-section">
       <div className="container featured-services-layout">
