@@ -11,7 +11,18 @@
     "build:next": "next build",
     "check": "node --check app.js && node --check nav.js && node --check account.js && node --check quote-account.js && node --check detail.js && node --check terraqo-data.js && node --check scripts/dev-static.js"
   },
+  "dependencies": {
+    "next": "15.5.15",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.13.0"
   }
 }
