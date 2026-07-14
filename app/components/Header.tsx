@@ -48,6 +48,10 @@ export default function Header() {
           </Link>
         ))}
 
+        <Link className="career-link" href={siteLinks.careers} onClick={closeMenus}>
+          Trabaja con nosotros
+        </Link>
+
         <Link className="account-link" href={siteLinks.account} aria-label="Cuenta cliente" onClick={closeMenus}>
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
             <path d="M20 21a8 8 0 0 0-16 0" />

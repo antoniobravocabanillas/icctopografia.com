@@ -244,6 +244,8 @@ img { max-width: 100%; }
 nav { position: relative; z-index: 70; display: flex; justify-content: flex-end; align-items: center; gap: clamp(12px, 1.7vw, 26px); justify-self: end; color: rgba(255,255,255,.92); font-family: var(--font-title); font-size: 13px; font-weight: 700; text-shadow: 0 1px 14px rgba(0,0,0,.34); }
 nav a { border-radius: 6px; padding: 10px 0; transition: color .2s ease, opacity .2s ease, background .2s ease; }
 nav a:hover { color: #7ff2e9; }
+.career-link { border: 1px solid rgba(127,242,233,.34); padding: 10px 12px; color: #7ff2e9; background: rgba(0,143,135,.1); text-shadow: none; white-space: nowrap; }
+.career-link:hover { border-color: rgba(127,242,233,.64); background: rgba(0,143,135,.22); color: white; }
 .account-link { width: 44px; min-height: 44px; display: inline-grid; place-items: center; overflow: hidden; border: 1px solid rgba(127,242,233,.28); border-radius: var(--radius-ui); background: rgba(0,143,135,.14); color: #7ff2e9; text-shadow: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 16px 34px rgba(0, 54, 52, .18); }
 .account-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .account-link svg { width: 21px; height: 21px; stroke: currentColor; }
@@ -898,6 +900,7 @@ main > .section:first-child { padding-top: 156px; }
   .site-header.is-mobile-open nav { opacity: 1; transform: translateY(0); pointer-events: auto; }
   nav a { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding: 13px 10px; color: rgba(255,255,255,.92); }
   nav a::after { content: "->"; color: #7ff2e9; font-family: var(--font-data); font-size: 12px; }
+  nav .career-link { margin-top: 8px; border: 1px solid rgba(127,242,233,.26); border-radius: var(--radius-ui); padding: 14px 12px; background: rgba(0,143,135,.16); color: #7ff2e9; }
   nav .header-cta { justify-content: center; margin-top: 10px; border-bottom: 0; padding: 14px 16px; }
   nav .header-cta::after { content: ""; }
   .account-link { width: 100%; height: auto; min-height: 46px; display: flex; justify-content: flex-start; gap: 10px; overflow: visible; border: 0; background: transparent; color: rgba(255,255,255,.92); text-shadow: inherit; box-shadow: none; }

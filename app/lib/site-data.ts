@@ -27,6 +27,7 @@ export const languages = [
 export const siteLinks = {
   quote: "/#cotizar",
   account: "/cuenta/",
+  careers: "/trabaja-con-nosotros/",
   store: "/tienda/",
 };
 
