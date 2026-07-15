@@ -28,6 +28,13 @@ const verificationLabels: Record<string, string> = {
   REJECTED: "Requiere correccion",
 };
 
+const evidenceLabels: Record<string, string> = {
+  DECLARED: "Declarada",
+  LINKED: "Vinculada a un proyecto",
+  CONFIRMED: "Confirmada por ICC",
+  VERIFIED: "Verificada por Terraqo",
+};
+
 function Metric({ value, label }: { value: string | number; label: string }) {
   return (
     <div className={styles.metric}>
@@ -41,8 +48,11 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
   const profile = session.professional;
   const [uploading, setUploading] = useState<"cv" | "identity" | "">("");
   const [uploadMessage, setUploadMessage] = useState("");
+  const [savingWorklog, setSavingWorklog] = useState(false);
+  const [worklogMessage, setWorklogMessage] = useState("");
 
   if (!profile) return null;
+  const worklogs = profile.worklogs || [];
 
   async function upload(event: FormEvent<HTMLFormElement>, purpose: "cv" | "identity") {
     event.preventDefault();
@@ -68,6 +78,39 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
   const cvDocument = profile.documents.find((document) => document.type === "CV");
   const identityDocuments = profile.documents.filter((document) => document.type !== "CV");
 
+  async function saveWorklog(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
+    setSavingWorklog(true);
+    setWorklogMessage("");
+    try {
+      const response = await fetch("/api/terraqo/portal/worklog", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          projectId: String(formData.get("projectId") || "") || undefined,
+          title: String(formData.get("title") || ""),
+          summary: String(formData.get("summary") || ""),
+          outcome: String(formData.get("outcome") || "") || undefined,
+          type: String(formData.get("type") || "FIELD_UPDATE"),
+          visibility: String(formData.get("visibility") || "PRIVATE"),
+          skills: String(formData.get("skills") || "").split(",").map((item) => item.trim()).filter(Boolean),
+          evidenceUrls: [],
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload?.error?.message || "No pudimos registrar tu bitacora.");
+      formElement.reset();
+      setWorklogMessage("Bitacora registrada. Esta evidencia ya forma parte de tu historial profesional.");
+      await onRefresh();
+    } catch (error) {
+      setWorklogMessage(error instanceof Error ? error.message : "No pudimos registrar tu bitacora.");
+    } finally {
+      setSavingWorklog(false);
+    }
+  }
+
   return (
     <main className={styles.shell}>
       <section className={styles.hero}>
@@ -77,7 +120,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
           <p className={styles.lead}>{profile.headline || session.user.title || "Perfil profesional"}</p>
           <div className={styles.meta}>
             <span>{profile.city || "Ubicacion por completar"}</span>
-            <span>{profile.yearsExperience} anos de experiencia</span>
+            <span>{profile.yearsExperience ?? 0} anos de experiencia</span>
             <span>{verificationLabels[profile.identityVerificationStatus] || profile.identityVerificationStatus}</span>
           </div>
         </div>
@@ -91,12 +134,38 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
 
       <section className={styles.metrics} aria-label="Resumen del perfil">
         <Metric value={profile.applications.length} label="Postulaciones" />
-        <Metric value={profile.experiences.length} label="Experiencias en CV vivo" />
+        <Metric value={worklogs.length} label="Evidencias en Bitacora" />
         <Metric value={profile.affiliations.length} label="Vinculos empresariales" />
         <Metric value={profile.liveCvEnabled ? "Activo" : "Privado"} label="Estado del CV vivo" />
       </section>
 
       <div className={styles.grid}>
+        <section className={`${styles.panel} ${styles.widePanel}`}>
+          <div className={styles.panelHeading}>
+            <div><p className={styles.eyebrow}>Bitacora Terraqo</p><h2>Documenta trabajo real</h2></div>
+            <span>Privado por defecto</span>
+          </div>
+          <p className={styles.panelCopy}>Registra avances, entregables o problemas resueltos. Puedes vincularlos a un proyecto asignado y decidir quien puede verlos.</p>
+          <form className={styles.worklogForm} onSubmit={saveWorklog}>
+            <label><span>Titulo</span><input name="title" placeholder="Ej. Control de niveles completado" required minLength={4} /></label>
+            <label><span>Tipo</span><select name="type"><option value="FIELD_UPDATE">Avance de trabajo</option><option value="DELIVERABLE">Entregable</option><option value="PROBLEM_SOLVED">Problema resuelto</option><option value="MILESTONE">Hito alcanzado</option><option value="LEARNING">Aprendizaje tecnico</option></select></label>
+            <label><span>Proyecto vinculado</span><select name="projectId"><option value="">Sin proyecto vinculado</option>{session.professionalNetwork?.projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label>
+            <label><span>Visibilidad</span><select name="visibility" defaultValue="PRIVATE"><option value="PRIVATE">Solo yo</option><option value="WORKSPACE">ICC Topografia</option><option value="COMMUNITY">Comunidad Terraqo</option><option value="PUBLIC">Publico</option></select></label>
+            <label className={styles.formWide}><span>Que hiciste y que problema resolviste</span><textarea name="summary" required minLength={20} placeholder="Describe el trabajo y el contexto necesario para entenderlo." /></label>
+            <label className={styles.formWide}><span>Resultado observable</span><textarea name="outcome" placeholder="Que cambio, se entrego o quedo habilitado gracias a este trabajo." /></label>
+            <label className={styles.formWide}><span>Habilidades, separadas por coma</span><input name="skills" placeholder="Topografia, AutoCAD, control de obra" /></label>
+            <button type="submit" disabled={savingWorklog}>{savingWorklog ? "Registrando..." : "Guardar en mi bitacora"}</button>
+          </form>
+          {worklogMessage ? <p className={styles.uploadMessage}>{worklogMessage}</p> : null}
+        </section>
+
+        <section className={`${styles.panel} ${styles.widePanel}`}>
+          <div className={styles.panelHeading}><div><p className={styles.eyebrow}>CV vivo</p><h2>Evidencia reciente</h2></div><span>{worklogs.length}</span></div>
+          <div className={styles.worklogList}>{worklogs.length ? worklogs.map((worklog) => <article key={worklog.id}><div><span>{worklog.type.replaceAll("_", " ")}</span><strong>{worklog.title}</strong><p>{worklog.summary}</p>{worklog.project ? <small>Proyecto: {worklog.project.title}</small> : null}</div><aside><b>{evidenceLabels[worklog.evidenceStatus] || worklog.evidenceStatus}</b><small>{worklog.visibility}</small></aside></article>) : <p className={styles.empty}>Tu primera entrada puede ser un avance, un entregable o un problema resuelto.</p>}</div>
+        </section>
+
+        {session.professionalNetwork?.opportunities.length ? <section className={`${styles.panel} ${styles.widePanel}`}><div className={styles.panelHeading}><div><p className={styles.eyebrow}>Oportunidades ICC</p><h2>Convocatorias abiertas</h2></div><span>{session.professionalNetwork.opportunities.length}</span></div><div className={styles.opportunityGrid}>{session.professionalNetwork.opportunities.map((opportunity) => <article key={opportunity.id}><strong>{opportunity.title}</strong><p>{opportunity.summary}</p><span>{opportunity.location || opportunity.modality || "Por coordinar"}</span></article>)}</div></section> : null}
+
         <section className={styles.panel}>
           <div className={styles.panelHeading}>
             <div>

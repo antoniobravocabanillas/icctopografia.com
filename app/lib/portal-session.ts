@@ -53,6 +53,33 @@ export type PortalSession = {
       createdAt: string;
       jobPost?: { title: string; slug: string } | null;
     }>;
+    worklogs?: Array<{
+      id: string;
+      title: string;
+      summary: string;
+      outcome?: string | null;
+      type: string;
+      evidenceStatus: string;
+      visibility: string;
+      skills: string[];
+      evidenceUrls: string[];
+      occurredAt: string;
+      project?: { id: string; title: string; slug: string } | null;
+      _count: { comments: number; reactions: number };
+    }>;
+  } | null;
+  professionalNetwork?: {
+    projects: Array<{ id: string; title: string; slug: string }>;
+    opportunities: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      summary: string;
+      location?: string | null;
+      modality?: string | null;
+      requiredSkills: string[];
+      requiredTools: string[];
+    }>;
   } | null;
   client?: {
     status: string;

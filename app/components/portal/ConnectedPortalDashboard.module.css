@@ -23,6 +23,7 @@
 .metric strong { display: block; color: #fff; font: 700 28px/1.1 Sora, sans-serif; }
 .metric span { display: block; margin-top: 8px; color: #9fbcbc; font-size: 13px; }
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.widePanel { grid-column: 1 / -1; }
 .panel { padding: 28px; border: 1px solid rgba(105, 222, 213, .2); border-radius: 8px; background: rgba(9, 34, 36, .92); }
 .panelHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
 .panelHeading h2, .panel > h2 { margin: 5px 0 0; font: 650 25px/1.2 Sora, sans-serif; }
@@ -40,6 +41,24 @@
 .uploadForm button:disabled { opacity: .6; cursor: wait; }
 .panel h3 { margin: 22px 0 10px; font-size: 14px; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.worklogForm { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+.worklogForm label { display: grid; gap: 7px; color: #b8cece; font-size: 12px; font-weight: 700; }
+.worklogForm input, .worklogForm select, .worklogForm textarea { width: 100%; min-height: 44px; padding: 11px 12px; border: 1px solid rgba(105, 222, 213, .2); border-radius: 6px; color: #edf7f6; background: #102a2c; font: 500 14px Manrope, sans-serif; }
+.worklogForm textarea { min-height: 94px; resize: vertical; }
+.formWide { grid-column: 1 / -1; }
+.worklogForm button { grid-column: 1 / -1; min-height: 48px; border: 0; border-radius: 6px; color: #fff; background: #079990; font-weight: 800; cursor: pointer; }
+.worklogForm button:disabled { opacity: .6; cursor: wait; }
+.worklogList { display: grid; gap: 12px; }
+.worklogList article { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; padding: 20px 0; border-top: 1px solid rgba(105, 222, 213, .14); }
+.worklogList strong { display: block; margin: 7px 0; font: 650 19px/1.3 Sora, sans-serif; }
+.worklogList p { margin: 0; color: #9fbcbc; line-height: 1.6; }
+.worklogList span, .worklogList small, .worklogList aside { color: #69ded5; font: 600 11px/1.4 "IBM Plex Mono", monospace; text-transform: uppercase; }
+.worklogList aside { display: grid; align-content: start; gap: 8px; text-align: right; }
+.opportunityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.opportunityGrid article { padding: 18px; border: 1px solid rgba(105, 222, 213, .16); border-radius: 6px; background: rgba(105, 222, 213, .045); }
+.opportunityGrid strong { display: block; font: 650 18px/1.3 Sora, sans-serif; }
+.opportunityGrid p { color: #9fbcbc; font-size: 13px; line-height: 1.6; }
+.opportunityGrid span { color: #69ded5; font: 600 11px/1.3 "IBM Plex Mono", monospace; }
 
 @media (max-width: 860px) {
   .shell { padding: 120px 18px 64px; }
@@ -50,6 +69,7 @@
   .metric:nth-child(2) { border-right: 0; }
   .metric:nth-child(-n+2) { border-bottom: 1px solid rgba(105, 222, 213, .2); }
   .grid { grid-template-columns: 1fr; }
+  .opportunityGrid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
@@ -62,4 +82,8 @@
   .panel { padding: 20px; }
   .panelHeading, .list article { align-items: flex-start; flex-direction: column; }
   .uploadForm { grid-template-columns: 1fr; }
+  .worklogForm { grid-template-columns: 1fr; }
+  .formWide, .worklogForm button { grid-column: auto; }
+  .worklogList article { grid-template-columns: 1fr; }
+  .worklogList aside { text-align: left; }
 }
