@@ -32,7 +32,8 @@ export default function PortalDashboard({ account, message, onLogout, onCreateRe
 
   const submitRequest = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const service = String(form.get("service") || "").trim();
     const scope = String(form.get("scope") || "").trim();
     const location = String(form.get("location") || "").trim();
@@ -52,7 +53,7 @@ export default function PortalDashboard({ account, message, onLogout, onCreateRe
 
     if (!created) return;
 
-    event.currentTarget.reset();
+    formElement.reset();
     setShowRequestForm(false);
   };
 

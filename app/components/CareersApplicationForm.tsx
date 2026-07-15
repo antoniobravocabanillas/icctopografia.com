@@ -21,10 +21,11 @@ export default function CareersApplicationForm({ categories, taxonomies, jobs }:
 
   async function submitApplication(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setStatus("sending");
     setMessage("");
 
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     const password = String(form.get("password") || "");
     const passwordConfirmation = String(form.get("passwordConfirmation") || "");
     if (password !== passwordConfirmation) {
@@ -74,7 +75,7 @@ export default function CareersApplicationForm({ categories, taxonomies, jobs }:
 
       setStatus("success");
       setMessage(data?.data?.message || "Tu postulacion fue registrada correctamente.");
-      event.currentTarget.reset();
+      formElement.reset();
       setSelectedJobId("");
       setSelectedCategory("");
     } catch (error) {
@@ -94,8 +95,8 @@ export default function CareersApplicationForm({ categories, taxonomies, jobs }:
           corresponda, vincular experiencia validada, empresas y proyectos a tu CV vivo. Para activar el distintivo de
           identidad deberas ingresar y subir el frente y reverso de tu DNI en el area privada.
         </p>
-        <a href="https://iridescent-fenglisu-d6595c.netlify.app/cuenta?callbackUrl=/portal" target="_blank" rel="noreferrer">
-          Ingresar a Portal Terraqo
+        <a href="/cuenta">
+          Ingresar a mi perfil profesional
         </a>
       </div>
     );

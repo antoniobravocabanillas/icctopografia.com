@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import {
   adminFields,
   clientFields,
@@ -10,41 +10,31 @@ import {
   type PortalField,
   type PortalRole,
 } from "../lib/portal-data";
+import type { PortalSession } from "../lib/portal-session";
+import ConnectedPortalDashboard from "./portal/ConnectedPortalDashboard";
 import PortalAccessCards from "./portal/PortalAccessCards";
-import PortalDashboard from "./portal/PortalDashboard";
 import PortalFooterNote from "./portal/PortalFooterNote";
 import PortalIntro from "./portal/PortalIntro";
 import PortalLoginForm from "./portal/PortalLoginForm";
 import PortalProfileSelector from "./portal/PortalProfileSelector";
 import PortalRegisterForm from "./portal/PortalRegisterForm";
-import type { PortalAccount, PortalMode } from "./portal/PortalTypes";
+import type { PortalMode } from "./portal/PortalTypes";
 
-const storageKey = "icc_topografia_accounts";
-const sessionKey = "icc_topografia_session";
-
-const readAccounts = (): PortalAccount[] => {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(storageKey) || "[]");
-  } catch {
-    return [];
-  }
-};
-
-const writeAccounts = (accounts: PortalAccount[]) => localStorage.setItem(storageKey, JSON.stringify(accounts));
 const normalizeEmail = (value: FormDataEntryValue | null) => String(value || "").trim().toLowerCase();
 
-async function postJson(path: string, payload: unknown) {
+function apiMessage(payload: any, fallback: string) {
+  return payload?.error?.message || payload?.error || payload?.message || fallback;
+}
+
+async function postJson(path: string, payload?: unknown) {
   const response = await fetch(path, {
     method: "POST",
     headers: { "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payload || {}),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data?.error || data?.message || "No se pudo completar la operacion.");
-  }
-  return data;
+  if (!response.ok) throw new Error(apiMessage(data, "No se pudo completar la operacion."));
+  return data?.data || data;
 }
 
 const fieldsByRole: Record<PortalRole, PortalField[]> = {
@@ -54,53 +44,62 @@ const fieldsByRole: Record<PortalRole, PortalField[]> = {
 };
 
 export default function AccountApp() {
-  const [accounts, setAccounts] = useState<PortalAccount[]>([]);
-  const [session, setSessionState] = useState("");
+  const [session, setSession] = useState<PortalSession | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [mode, setMode] = useState<PortalMode>("login");
   const [selectedRole, setSelectedRole] = useState<PortalRole>("client");
 
-  useEffect(() => {
-    setAccounts(readAccounts());
-    setSessionState(localStorage.getItem(sessionKey) || "");
+  const loadSession = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    try {
+      const response = await fetch("/api/terraqo/portal/session", { headers: { accept: "application/json" }, cache: "no-store" });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        if (response.status === 401) {
+          setSession(null);
+          return;
+        }
+        throw new Error(apiMessage(payload, "No pudimos consultar tu perfil."));
+      }
+      setSession(payload.data as PortalSession);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "No pudimos conectar con Portal Terraqo.");
+    } finally {
+      if (!silent) setLoading(false);
+    }
   }, []);
 
-  const account = accounts.find((item) => item.email === session);
-  const setSession = (email: string) => {
-    localStorage.setItem(sessionKey, email);
-    setSessionState(email);
-  };
+  useEffect(() => { void loadSession(); }, [loadSession]);
 
   const selectRole = (role: PortalRole) => {
     setSelectedRole(role);
     setMode(role === "admin" ? "login" : "register");
-    setMessage(
-      role === "admin"
-        ? "El acceso administrador requiere una cuenta autorizada por ICC Topografia."
-        : `Completa el registro para ${role === "client" ? "cliente" : "profesional tecnico"}.`,
-    );
+    setMessage(role === "admin"
+      ? "El acceso administrador requiere una cuenta autorizada para el workspace ICC Topografia."
+      : `Completa el registro para ${role === "client" ? "cliente" : "profesional"}.`);
     window.requestAnimationFrame(() => document.getElementById("portal-access")?.scrollIntoView({ behavior: "smooth" }));
   };
 
-  const login = (event: FormEvent<HTMLFormElement>) => {
+  async function authenticate(email: string, password: string) {
+    await postJson("/api/terraqo/portal/login", { email, password });
+    await loadSession(true);
+  }
+
+  const login = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const email = normalizeEmail(form.get("email"));
-    const password = String(form.get("password") || "");
-    const found = accounts.find((item) => item.email === email && item.password === password);
-
-    if (!found) {
-      setMessage("El correo ingresado no esta registrado o la contrasena es incorrecta.");
-      return;
+    setSubmitting(true);
+    setMessage("");
+    try {
+      await authenticate(normalizeEmail(form.get("email")), String(form.get("password") || ""));
+      setMessage("Bienvenido a tu espacio profesional en Portal Terraqo.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "El correo o la contrasena no son correctos.");
+    } finally {
+      setSubmitting(false);
     }
-
-    if (found.status === "pending") {
-      setMessage("Tu cuenta esta pendiente de validacion.");
-      return;
-    }
-
-    setSession(email);
-    setMessage("Bienvenido al Portal Terraqo.");
   };
 
   const create = async (event: FormEvent<HTMLFormElement>) => {
@@ -110,25 +109,9 @@ export default function AccountApp() {
     const password = String(form.get("password") || "");
     const confirmPassword = String(form.get("confirmPassword") || "");
 
-    if (!email || !password) {
-      setMessage("Completa los campos obligatorios para continuar.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setMessage("La confirmacion de contrasena no coincide.");
-      return;
-    }
-
-    if (accounts.some((item) => item.email === email)) {
-      setMessage("Ya existe una cuenta con ese correo.");
-      return;
-    }
-
-    if (selectedRole === "admin") {
-      setMessage("Este tipo de acceso requiere autorizacion del equipo administrador.");
-      return;
-    }
+    if (!email || !password) return setMessage("Completa los campos obligatorios para continuar.");
+    if (password !== confirmPassword) return setMessage("La confirmacion de contrasena no coincide.");
+    if (selectedRole === "admin") return setMessage("Este tipo de acceso requiere autorizacion del equipo administrador.");
 
     const profile = Object.fromEntries(
       fieldsByRole[selectedRole]
@@ -136,93 +119,52 @@ export default function AccountApp() {
         .map((field) => [field.name, String(form.get(field.name) || "").trim()]),
     );
 
-    const accountData: PortalAccount = {
-      id: `terraqo-${Date.now()}`,
-      role: selectedRole,
-      status: selectedRole === "professional" ? "pending" : "active",
-      name: String(form.get("name") || "").trim(),
-      company: String(form.get("company") || "").trim(),
-      phone: String(form.get("phone") || "").trim(),
-      email,
-      password,
-      profile,
-      quotes: [],
-      createdAt: new Date().toISOString(),
-    };
-
+    setSubmitting(true);
+    setMessage("");
     try {
-      const registration = await postJson("/api/terraqo/register", {
+      await postJson("/api/terraqo/register", {
         accountType: selectedRole,
-        name: accountData.name,
+        name: String(form.get("name") || "").trim(),
         email,
         password,
-        company: accountData.company,
-        document: accountData.profile.document,
-        phone: accountData.phone,
-        roleTitle: accountData.profile.roleTitle,
-        specialty: accountData.profile.specialty,
-        city: accountData.profile.city,
-        yearsExperience: accountData.profile.yearsExperience ? Number(accountData.profile.yearsExperience) : undefined,
-        equipment: accountData.profile.equipment,
-        software: accountData.profile.software,
-        portfolioUrl: accountData.profile.portfolioUrl,
+        company: String(form.get("company") || "").trim(),
+        document: profile.ruc || profile.document,
+        phone: String(form.get("phone") || "").trim(),
+        roleTitle: profile.position || profile.roleTitle,
+        specialty: profile.specialty,
+        city: profile.city,
+        yearsExperience: profile.experience ? Number(profile.experience) : undefined,
+        equipment: profile.equipment,
+        software: profile.software,
+        portfolioUrl: profile.portfolio,
       });
-
-      accountData.id = registration?.id || accountData.id;
-      accountData.status = registration?.status === "pending_approval" ? "pending" : accountData.status;
+      await authenticate(email, password);
+      setMessage("Cuenta creada correctamente. Bienvenido a Portal Terraqo.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "No se pudo crear la cuenta en Portal Terraqo.");
-      return;
+    } finally {
+      setSubmitting(false);
     }
-
-    const next = accounts.concat(accountData);
-    writeAccounts(next);
-    setAccounts(next);
-
-    if (accountData.status === "pending") {
-      setMode("login");
-      setMessage("Tus datos fueron registrados. Tu cuenta profesional queda pendiente de validacion.");
-      return;
-    }
-
-    setSession(email);
-    setMessage("Cuenta creada correctamente. Bienvenido al Portal Terraqo.");
   };
 
-  if (account) {
+  if (loading) {
+    return (
+      <section className="account-hero portal-dashboard">
+        <div className="container account-grid"><div className="portal-intro"><p className="eyebrow">Portal Terraqo</p><h1>Validando tu acceso</h1><p>Conectando con el workspace seguro de ICC Topografia.</p></div></div>
+      </section>
+    );
+  }
+
+  if (session) {
     return (
       <>
-        <PortalDashboard
-          account={account}
+        <ConnectedPortalDashboard
+          session={session}
           message={message}
-          onCreateRequest={async (request) => {
-            try {
-              const created = await postJson("/api/terraqo/quote", {
-                name: account.name,
-                email: account.email,
-                phone: account.phone,
-                company: account.company,
-                service: request.service,
-                location: request.location,
-                scope: request.scope,
-              });
-              request.id = created?.id || request.id;
-            } catch (error) {
-              setMessage(error instanceof Error ? error.message : "No se pudo registrar la solicitud en Portal Terraqo.");
-              return false;
-            }
-
-            const next = accounts.map((item) =>
-              item.email === account.email ? { ...item, quotes: [request, ...item.quotes] } : item,
-            );
-            writeAccounts(next);
-            setAccounts(next);
-            setMessage("Solicitud enviada con exito. El equipo ICC Topografia la revisara para cotizar.");
-            return true;
-          }}
-          onLogout={() => {
-            localStorage.removeItem(sessionKey);
-            setSessionState("");
+          onRefresh={() => loadSession(true)}
+          onLogout={async () => {
+            await postJson("/api/terraqo/portal/logout");
+            setSession(null);
             setMessage("Sesion cerrada.");
           }}
         />
@@ -241,51 +183,23 @@ export default function AccountApp() {
           <div className="account-panel portal-panel">
             {message ? <div className="account-alert">{message}</div> : null}
             <div className="account-tabs" role="tablist" aria-label="Ingreso y registro Portal Terraqo">
-              <button className={mode === "login" ? "is-active" : ""} type="button" onClick={() => setMode("login")}>
-                Iniciar sesion
-              </button>
-              <button
-                className={mode === "register" ? "is-active" : ""}
-                type="button"
-                onClick={() => {
-                  setMode("register");
-                  if (selectedRole === "admin") setSelectedRole("client");
-                }}
-              >
-                Crear cuenta
-              </button>
+              <button className={mode === "login" ? "is-active" : ""} type="button" onClick={() => setMode("login")}>Iniciar sesion</button>
+              <button className={mode === "register" ? "is-active" : ""} type="button" onClick={() => { setMode("register"); if (selectedRole === "admin") setSelectedRole("client"); }}>Crear cuenta</button>
             </div>
-
+            {submitting ? <div className="account-alert">Conectando con tu workspace...</div> : null}
             {mode === "login" ? (
               <PortalLoginForm onSubmit={login} onRegisterClick={() => setMode("register")} />
             ) : (
               <>
                 <PortalProfileSelector profiles={portalProfiles} activeRole={selectedRole} onSelect={setSelectedRole} />
-                <PortalRegisterForm
-                  role={selectedRole}
-                  fields={fieldsByRole[selectedRole]}
-                  onSubmit={create}
-                  onAdminAccess={() => {
-                    setMode("login");
-                    setMessage("Ingresa con tu correo corporativo autorizado.");
-                  }}
-                />
+                <PortalRegisterForm role={selectedRole} fields={fieldsByRole[selectedRole]} onSubmit={create} onAdminAccess={() => { setMode("login"); setMessage("Ingresa con tu correo corporativo autorizado."); }} />
               </>
             )}
           </div>
         </div>
       </section>
-
       <PortalAccessCards profiles={portalProfiles} onSelect={selectRole} />
-
-      <section className="portal-trust-section">
-        <div className="container portal-trust-grid">
-          {portalTrustMessages.map((trust) => (
-            <p key={trust}>{trust}</p>
-          ))}
-        </div>
-      </section>
-
+      <section className="portal-trust-section"><div className="container portal-trust-grid">{portalTrustMessages.map((trust) => <p key={trust}>{trust}</p>)}</div></section>
       <PortalFooterNote />
     </>
   );
