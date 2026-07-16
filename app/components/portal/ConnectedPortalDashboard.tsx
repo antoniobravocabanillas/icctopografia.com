@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Image from "next/image";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import type { PortalSession } from "../../lib/portal-session";
 import styles from "./ConnectedPortalDashboard.module.css";
 
@@ -46,15 +47,40 @@ function Metric({ value, label }: { value: string | number; label: string }) {
 
 function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props) {
   const profile = session.professional;
-  const [uploading, setUploading] = useState<"cv" | "identity" | "">("");
+  const [uploading, setUploading] = useState<"cv" | "identity" | "document" | "">("");
   const [uploadMessage, setUploadMessage] = useState("");
+  const [previewDocumentId, setPreviewDocumentId] = useState("");
   const [savingWorklog, setSavingWorklog] = useState(false);
   const [worklogMessage, setWorklogMessage] = useState("");
+  const [worklogPhotos, setWorklogPhotos] = useState<File[]>([]);
+  const [worklogPreviews, setWorklogPreviews] = useState<string[]>([]);
+
+  const worklogs = profile?.worklogs || [];
+
+  useEffect(() => {
+    const previews = worklogPhotos.map((file) => URL.createObjectURL(file));
+    setWorklogPreviews(previews);
+    return () => previews.forEach((preview) => URL.revokeObjectURL(preview));
+  }, [worklogPhotos]);
+
+  useEffect(() => {
+    if (!previewDocumentId) return;
+    const closePreview = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setPreviewDocumentId("");
+    };
+    document.addEventListener("keydown", closePreview);
+    return () => document.removeEventListener("keydown", closePreview);
+  }, [previewDocumentId]);
 
   if (!profile) return null;
-  const worklogs = profile.worklogs || [];
 
-  async function upload(event: FormEvent<HTMLFormElement>, purpose: "cv" | "identity") {
+  function selectWorklogPhotos(event: ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(event.target.files || []);
+    if (selected.length > 6) setWorklogMessage("Puedes adjuntar hasta 6 fotos por bitacora.");
+    setWorklogPhotos(selected.slice(0, 6));
+  }
+
+  async function upload(event: FormEvent<HTMLFormElement>, purpose: "cv" | "identity" | "document") {
     event.preventDefault();
     const formElement = event.currentTarget;
     const formData = new FormData(formElement);
@@ -76,7 +102,20 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
   }
 
   const cvDocument = profile.documents.find((document) => document.type === "CV");
-  const identityDocuments = profile.documents.filter((document) => document.type !== "CV");
+  const identityDocuments = profile.documents.filter((document) => document.type === "DNI_FRONT" || document.type === "DNI_BACK");
+  const privateDocuments = profile.documents.filter((document) => !["CV", "DNI_FRONT", "DNI_BACK"].includes(document.type));
+  const documentLabels: Record<(typeof profile.documents)[number]["type"], string> = {
+    CV: "CV profesional",
+    DNI_FRONT: "DNI por delante",
+    DNI_BACK: "DNI por detras",
+    CERTIFICATE: "Certificado o constancia",
+    PROFESSIONAL_LICENSE: "Colegiatura o licencia",
+    CRIMINAL_RECORD: "Antecedentes penales",
+    MEDICAL_EXAM: "Examen medico ocupacional",
+    BANK_CERTIFICATE: "Constancia bancaria",
+    OTHER: "Otro documento",
+  };
+  const previewDocument = profile.documents.find((document) => document.id === previewDocumentId);
 
   async function saveWorklog(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -101,7 +140,22 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload?.error?.message || "No pudimos registrar tu bitacora.");
+
+      if (worklogPhotos.length) {
+        const evidenceData = new FormData();
+        worklogPhotos.forEach((file) => evidenceData.append("photos", file));
+        const uploadResponse = await fetch(`/api/terraqo/portal/worklog/${payload.data.id}/evidence`, {
+          method: "POST",
+          body: evidenceData,
+        });
+        const uploadPayload = await uploadResponse.json().catch(() => ({}));
+        if (!uploadResponse.ok) {
+          throw new Error(uploadPayload?.error?.message || "La bitacora se guardo, pero no pudimos adjuntar las fotos.");
+        }
+      }
+
       formElement.reset();
+      setWorklogPhotos([]);
       setWorklogMessage("Bitacora registrada. Esta evidencia ya forma parte de tu historial profesional.");
       await onRefresh();
     } catch (error) {
@@ -154,6 +208,12 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
             <label className={styles.formWide}><span>Que hiciste y que problema resolviste</span><textarea name="summary" required minLength={20} placeholder="Describe el trabajo y el contexto necesario para entenderlo." /></label>
             <label className={styles.formWide}><span>Resultado observable</span><textarea name="outcome" placeholder="Que cambio, se entrego o quedo habilitado gracias a este trabajo." /></label>
             <label className={styles.formWide}><span>Habilidades, separadas por coma</span><input name="skills" placeholder="Topografia, AutoCAD, control de obra" /></label>
+            <label className={styles.formWide}><span>Fotos de evidencia</span><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple onChange={selectWorklogPhotos} /><small>Hasta 6 fotos. Maximo 8 MB por archivo.</small></label>
+            {worklogPreviews.length ? <div className={styles.evidencePreview}>{worklogPreviews.map((preview, index) => <figure key={preview}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={preview} alt={`Vista previa ${index + 1}`} />
+              <button type="button" onClick={() => setWorklogPhotos((current) => current.filter((_, photoIndex) => photoIndex !== index))} aria-label={`Quitar foto ${index + 1}`}>Quitar</button>
+            </figure>)}</div> : null}
             <button type="submit" disabled={savingWorklog}>{savingWorklog ? "Registrando..." : "Guardar en mi bitacora"}</button>
           </form>
           {worklogMessage ? <p className={styles.uploadMessage}>{worklogMessage}</p> : null}
@@ -161,7 +221,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
 
         <section className={`${styles.panel} ${styles.widePanel}`}>
           <div className={styles.panelHeading}><div><p className={styles.eyebrow}>CV vivo</p><h2>Evidencia reciente</h2></div><span>{worklogs.length}</span></div>
-          <div className={styles.worklogList}>{worklogs.length ? worklogs.map((worklog) => <article key={worklog.id}><div><span>{worklog.type.replaceAll("_", " ")}</span><strong>{worklog.title}</strong><p>{worklog.summary}</p>{worklog.project ? <small>Proyecto: {worklog.project.title}</small> : null}</div><aside><b>{evidenceLabels[worklog.evidenceStatus] || worklog.evidenceStatus}</b><small>{worklog.visibility}</small></aside></article>) : <p className={styles.empty}>Tu primera entrada puede ser un avance, un entregable o un problema resuelto.</p>}</div>
+          <div className={styles.worklogList}>{worklogs.length ? worklogs.map((worklog) => <article key={worklog.id}><div><span>{worklog.type.replaceAll("_", " ")}</span><strong>{worklog.title}</strong><p>{worklog.summary}</p>{worklog.media?.length ? <div className={styles.evidenceGallery}>{worklog.media.map((media, index) => <a key={media.id} href={`/api/terraqo/portal/worklog/evidence/${media.id}`} target="_blank" rel="noreferrer"><Image src={`/api/terraqo/portal/worklog/evidence/${media.id}`} alt={`${worklog.title}, evidencia ${index + 1}`} width={320} height={220} unoptimized /></a>)}</div> : null}{worklog.project ? <small>Proyecto: {worklog.project.title}</small> : null}</div><aside><b>{evidenceLabels[worklog.evidenceStatus] || worklog.evidenceStatus}</b><small>{worklog.visibility}</small></aside></article>) : <p className={styles.empty}>Tu primera entrada puede ser un avance, un entregable o un problema resuelto.</p>}</div>
         </section>
 
         {session.professionalNetwork?.opportunities.length ? <section className={`${styles.panel} ${styles.widePanel}`}><div className={styles.panelHeading}><div><p className={styles.eyebrow}>Oportunidades ICC</p><h2>Convocatorias abiertas</h2></div><span>{session.professionalNetwork.opportunities.length}</span></div><div className={styles.opportunityGrid}>{session.professionalNetwork.opportunities.map((opportunity) => <article key={opportunity.id}><strong>{opportunity.title}</strong><p>{opportunity.summary}</p><span>{opportunity.location || opportunity.modality || "Por coordinar"}</span></article>)}</div></section> : null}
@@ -187,37 +247,38 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
           </div>
         </section>
 
-        <section className={styles.panel}>
+        <section id="documentos-datos" className={`${styles.panel} ${styles.widePanel}`}>
           <div className={styles.panelHeading}>
             <div>
-              <p className={styles.eyebrow}>Validacion Terraqo</p>
-              <h2>Identidad y documentos</h2>
+              <p className={styles.eyebrow}>Expediente privado</p>
+              <h2>Documentos y datos profesionales</h2>
             </div>
             <span>{verificationLabels[profile.identityVerificationStatus] || profile.identityVerificationStatus}</span>
           </div>
-          <p className={styles.panelCopy}>Tus documentos son privados y se utilizan solo para validar tu identidad y experiencia profesional.</p>
+          <p className={styles.panelCopy}>Centraliza CV, identidad, certificados, colegiatura, antecedentes, examen medico y constancias bancarias. Solo tu cuenta y los responsables autorizados de ICC Topografia pueden consultar este expediente.</p>
           <div className={styles.documentSummary}>
             <span>CV: {cvDocument ? `${cvDocument.fileName} · ${cvDocument.reviewStatus}` : "pendiente"}</span>
             <span>DNI: {identityDocuments.length >= 2 ? "recibido" : "pendiente"}</span>
+            <span>Complementarios: {privateDocuments.length}</span>
           </div>
-          <form className={styles.uploadForm} onSubmit={(event) => upload(event, "cv")}>
-            <label>
-              <span>Actualizar CV</span>
-              <input name="cvFile" type="file" accept=".pdf,.doc,.docx" required />
-            </label>
-            <button type="submit" disabled={Boolean(uploading)}>{uploading === "cv" ? "Cargando..." : "Subir CV"}</button>
+          {cvDocument ? <button type="button" className={styles.documentViewButton} onClick={() => setPreviewDocumentId(cvDocument.id)}>Previsualizar CV</button> : null}
+          <div className={styles.documentForms}>
+            <form className={styles.uploadForm} onSubmit={(event) => upload(event, "cv")}>
+              <label><span>Actualizar CV</span><input name="cvFile" type="file" accept=".pdf,.doc,.docx" required /></label>
+              <button type="submit" disabled={Boolean(uploading)}>{uploading === "cv" ? "Cargando..." : "Subir CV"}</button>
+            </form>
+            <form className={styles.uploadForm} onSubmit={(event) => upload(event, "identity")}>
+              <label><span>DNI frontal</span><input name="dniFront" type="file" accept="image/jpeg,image/png,image/webp,.pdf" required /></label>
+              <label><span>DNI posterior</span><input name="dniBack" type="file" accept="image/jpeg,image/png,image/webp,.pdf" required /></label>
+              <button type="submit" disabled={Boolean(uploading)}>{uploading === "identity" ? "Cargando..." : "Enviar a validar"}</button>
+            </form>
+          </div>
+          <form className={styles.privateDocumentForm} onSubmit={(event) => upload(event, "document")}>
+            <label><span>Categoria</span><select name="documentType" required><option value="CERTIFICATE">Certificado o constancia</option><option value="PROFESSIONAL_LICENSE">Colegiatura o licencia</option><option value="CRIMINAL_RECORD">Antecedentes penales</option><option value="MEDICAL_EXAM">Examen medico ocupacional</option><option value="BANK_CERTIFICATE">Constancia bancaria</option><option value="OTHER">Otro documento</option></select></label>
+            <label><span>Archivo</span><input name="documentFile" type="file" accept="image/jpeg,image/png,image/webp,.pdf" required /><small>PDF o imagen, maximo 10 MB.</small></label>
+            <button type="submit" disabled={Boolean(uploading)}>{uploading === "document" ? "Cargando..." : "Agregar al expediente"}</button>
           </form>
-          <form className={styles.uploadForm} onSubmit={(event) => upload(event, "identity")}>
-            <label>
-              <span>DNI frontal</span>
-              <input name="dniFront" type="file" accept="image/jpeg,image/png,image/webp,.pdf" required />
-            </label>
-            <label>
-              <span>DNI posterior</span>
-              <input name="dniBack" type="file" accept="image/jpeg,image/png,image/webp,.pdf" required />
-            </label>
-            <button type="submit" disabled={Boolean(uploading)}>{uploading === "identity" ? "Cargando..." : "Enviar a validar"}</button>
-          </form>
+          <div className={styles.privateDocumentGrid}>{privateDocuments.map((document) => <article key={document.id}><div><span>{documentLabels[document.type]}</span><strong>{document.fileName}</strong><small>{document.reviewStatus === "VERIFIED" ? "Verificado" : document.reviewStatus === "REJECTED" ? "Requiere correccion" : "Pendiente de revision"}</small></div><button type="button" onClick={() => setPreviewDocumentId(document.id)}>Ver dentro del portal</button></article>)}</div>
           {uploadMessage ? <p className={styles.uploadMessage}>{uploadMessage}</p> : null}
         </section>
 
@@ -255,6 +316,18 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
           </div>
         </section>
       </div>
+      {previewDocument ? (
+        <div className={styles.documentModal} role="dialog" aria-modal="true" aria-label={`Vista previa de ${documentLabels[previewDocument.type]}`}>
+          <div className={styles.documentModalPanel}>
+            <header><div><span>{documentLabels[previewDocument.type]}</span><strong>{previewDocument.fileName}</strong></div><button type="button" onClick={() => setPreviewDocumentId("")} aria-label="Cerrar vista previa">×</button></header>
+            <div className={styles.documentFrame}>
+              {previewDocument.contentType === "application/pdf" || previewDocument.contentType.startsWith("image/")
+                ? <iframe title={previewDocument.fileName} src={`/api/terraqo/portal/documents/${previewDocument.id}?inline=1`} />
+                : <div><div><p>Este formato no puede mostrarse directamente en el navegador.</p><a href={`/api/terraqo/portal/documents/${previewDocument.id}`}>Descargar archivo protegido</a></div></div>}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

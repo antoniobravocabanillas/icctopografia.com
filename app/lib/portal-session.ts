@@ -2,8 +2,10 @@ export const portalSessionCookie = "icc_portal_session";
 
 export type PortalDocument = {
   id: string;
-  type: "CV" | "DNI_FRONT" | "DNI_BACK";
+  type: "CV" | "DNI_FRONT" | "DNI_BACK" | "CERTIFICATE" | "PROFESSIONAL_LICENSE" | "CRIMINAL_RECORD" | "MEDICAL_EXAM" | "BANK_CERTIFICATE" | "OTHER";
   fileName: string;
+  contentType: string;
+  size: number;
   reviewStatus: string;
   reviewNote?: string | null;
   uploadedAt: string;
@@ -63,6 +65,14 @@ export type PortalSession = {
       visibility: string;
       skills: string[];
       evidenceUrls: string[];
+      media: Array<{
+        id: string;
+        fileName: string;
+        contentType: string;
+        size: number;
+        sortOrder: number;
+        createdAt: string;
+      }>;
       occurredAt: string;
       project?: { id: string; title: string; slug: string } | null;
       _count: { comments: number; reactions: number };
