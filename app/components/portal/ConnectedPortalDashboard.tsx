@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import type { PortalSession } from "../../lib/portal-session";
 import styles from "./ConnectedPortalDashboard.module.css";
+import { PortalPrivateWorkspace } from "./PortalPrivateWorkspace";
 
 type Props = {
   session: PortalSession;
@@ -315,6 +316,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
             )) : <p className={styles.empty}>La experiencia validada por proyectos aparecera aqui.</p>}
           </div>
         </section>
+        <PortalPrivateWorkspace userId={session.user.id} />
       </div>
       {previewDocument ? (
         <div className={styles.documentModal} role="dialog" aria-modal="true" aria-label={`Vista previa de ${documentLabels[previewDocument.type]}`}>
