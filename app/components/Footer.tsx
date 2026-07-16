@@ -19,6 +19,14 @@ const footerRoutes = [
   { label: "Contacto", href: "/contacto/" },
   { label: "Cuenta cliente", href: "/cuenta/" },
 ];
+const footerUtils = [
+  { label: "Trabaja con nosotros", href: "/nosotros/" },
+  { label: "Brochure", href: "/casos-exito/" },
+  { label: "Libro de reclamaciones", href: "/metodo-icc/" },
+  { label: "Preguntas frecuentes", href: "/tienda/" },
+  { label: "Terminos y condiciones", href: "/contacto/" },
+  { label: "Politica de privacidad y tratamiento de datos", href: "/ppytd/" },
+];
 
 const socialLinks = [
   { label: "in", href: "https://www.linkedin.com/" },
@@ -33,6 +41,7 @@ export default function Footer() {
       <div className="container footer-shell">
         <div className="footer-brand-panel">
           <Image className="footer-logo" src="/brand/icc-topografia-logo.png" alt="ICC Topografia" width={240} height={50} />
+          <h4>ICC TOPOGRAFIA GROUP SAC - RUC <span>20-61611631-3</span> </h4>
           <p>Soluciones topograficas con precision, tecnologia y compromiso para cada proyecto.</p>
           <span />
 
@@ -88,6 +97,16 @@ export default function Footer() {
           <h3>Enlaces</h3>
           <i />
           {footerRoutes.map((route) => (
+            <Link key={route.href} href={route.href}>
+              {route.label}
+              <span>-&gt;</span>
+            </Link>
+          ))}
+        </nav>
+        <nav className="footer-column" aria-label="utiles del footer">
+          <h3>utiles</h3>
+          <i />
+          {footerUtils.map((route) => (
             <Link key={route.href} href={route.href}>
               {route.label}
               <span>-&gt;</span>
