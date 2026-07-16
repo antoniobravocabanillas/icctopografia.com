@@ -75,6 +75,13 @@ export type PortalSession = {
       }>;
       occurredAt: string;
       project?: { id: string; title: string; slug: string } | null;
+      validations: Array<{
+        id: string;
+        status: string;
+        requestedAt: string;
+        resolvedAt?: string | null;
+        validator: { id: string; name?: string | null; image?: string | null };
+      }>;
       _count: { comments: number; reactions: number };
     }>;
   } | null;

@@ -12,6 +12,7 @@
     "check": "node --check app.js && node --check nav.js && node --check account.js && node --check quote-account.js && node --check detail.js && node --check terraqo-data.js && node --check scripts/dev-static.js"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "^9.0.1",
     "next": "15.5.15",
     "react": "19.2.3",
     "react-dom": "19.2.3"

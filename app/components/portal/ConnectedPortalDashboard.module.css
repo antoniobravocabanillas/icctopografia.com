@@ -91,6 +91,40 @@
 .opportunityGrid p { color: #9fbcbc; font-size: 13px; line-height: 1.6; }
 .opportunityGrid span { color: #69ded5; font: 600 11px/1.3 "IBM Plex Mono", monospace; }
 
+.fieldPanel { margin: 28px 0 34px; overflow: hidden; padding: 26px; border: 1px solid rgba(105, 222, 213, .23); border-radius: 8px; color: #eaf5f4; background: linear-gradient(110deg, rgba(12, 53, 54, .98), rgba(8, 38, 40, .96)); box-shadow: 0 22px 60px rgba(0, 0, 0, .2); }
+.fieldHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; }
+.fieldHeader h2 { margin: 5px 0 6px; font: 650 24px/1.2 Sora, sans-serif; }
+.fieldHeader p:last-child { max-width: 720px; margin: 0; color: #9fbcbc; font-size: 13px; }
+.fieldReady, .fieldPending { flex: 0 0 auto; padding: 8px 11px; border-radius: 6px; font: 700 10px/1.2 "IBM Plex Mono", monospace; text-transform: uppercase; }
+.fieldReady { color: #8ff5d3; background: rgba(44, 197, 136, .12); }
+.fieldPending { color: #ffd996; background: rgba(255, 178, 57, .12); }
+.deviceActivation { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 20px; padding: 16px; border: 1px solid rgba(255, 217, 150, .22); border-radius: 6px; background: rgba(255, 178, 57, .07); }
+.deviceActivation p { margin: 0; color: #d8e7e7; font-size: 13px; }
+.deviceActivation button, .attendanceRow > button, .validationInbox button { min-height: 42px; padding: 0 16px; border: 0; border-radius: 6px; color: white; background: #079990; font-weight: 800; cursor: pointer; }
+.deviceActivation button:disabled, .attendanceRow > button:disabled, .validationInbox button:disabled { opacity: .55; cursor: not-allowed; }
+.attendanceRow { display: grid; grid-template-columns: minmax(280px, 1fr) auto minmax(250px, .7fr); align-items: end; gap: 14px; margin-top: 22px; }
+.attendanceRow label { display: grid; gap: 7px; color: #b8cece; font-size: 12px; font-weight: 700; }
+.attendanceRow select, .validationRequest select { min-height: 44px; width: 100%; padding: 0 12px; border: 1px solid rgba(105, 222, 213, .22); border-radius: 6px; color: #edf7f6; background: #102a2c; }
+.attendanceRow p { display: grid; gap: 4px; margin: 0; padding-left: 16px; border-left: 1px solid rgba(105, 222, 213, .2); }
+.attendanceRow p strong { color: #69ded5; font: 700 10px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; }
+.attendanceRow p span { color: #c5d8d8; font-size: 12px; }
+.fieldEmpty { margin: 18px 0 0; color: #9fbcbc; font-size: 13px; }
+.validationInbox { display: grid; gap: 12px; margin-top: 24px; padding-top: 22px; border-top: 1px solid rgba(105, 222, 213, .16); }
+.validationInbox h3 { margin: 5px 0 2px; font: 650 20px/1.25 Sora, sans-serif; }
+.validationInbox article { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px; border: 1px solid rgba(105, 222, 213, .16); border-radius: 6px; background: rgba(255, 255, 255, .025); }
+.validationInbox article strong { display: block; }
+.validationInbox article p, .validationInbox article small { display: block; margin: 4px 0 0; color: #9fbcbc; font-size: 12px; }
+.fieldMessage, .fieldError { margin: 18px 0 0; padding: 12px 14px; border-radius: 6px; font-size: 13px; font-weight: 700; }
+.fieldMessage { border: 1px solid rgba(105, 222, 213, .22); color: #bdf7f2; background: rgba(7, 153, 144, .1); }
+.fieldError { border: 1px solid rgba(255, 117, 117, .35); color: #ffd0d0; background: rgba(176, 36, 36, .16); }
+.validationRequest { margin-top: 14px; }
+.validationRequest > button, .validationRequest > div button { min-height: 38px; padding: 0 12px; border: 1px solid rgba(105, 222, 213, .28); border-radius: 6px; color: #bdf7f2; background: transparent; font-weight: 800; cursor: pointer; }
+.validationRequest > div { display: grid; grid-template-columns: minmax(230px, 1fr) auto auto; gap: 8px; }
+.validationRequest small { display: block; margin-top: 8px; color: #ffb5b5; }
+.validationApproved, .validationRequested { display: inline-flex; margin-top: 14px; padding: 7px 10px; border-radius: 6px; font: 700 10px/1.2 "IBM Plex Mono", monospace; text-transform: uppercase; }
+.validationApproved { color: #8ff5d3; background: rgba(44, 197, 136, .12); }
+.validationRequested { color: #ffd996; background: rgba(255, 178, 57, .12); }
+
 @media (max-width: 860px) {
   .shell { padding: 120px 18px 64px; }
   .hero { align-items: flex-start; flex-direction: column; }
@@ -101,6 +135,9 @@
   .metric:nth-child(-n+2) { border-bottom: 1px solid rgba(105, 222, 213, .2); }
   .grid { grid-template-columns: 1fr; }
   .opportunityGrid { grid-template-columns: 1fr; }
+  .fieldHeader, .deviceActivation { align-items: stretch; flex-direction: column; }
+  .attendanceRow { grid-template-columns: 1fr; }
+  .attendanceRow p { padding: 12px 0 0; border-top: 1px solid rgba(105, 222, 213, .2); border-left: 0; }
 }
 
 @media (max-width: 560px) {
@@ -119,4 +156,7 @@
   .worklogList article { grid-template-columns: 1fr; }
   .worklogList aside { text-align: left; }
   .evidencePreview, .evidenceGallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fieldPanel { padding: 20px; }
+  .validationInbox article { align-items: stretch; flex-direction: column; }
+  .validationRequest > div { grid-template-columns: 1fr; }
 }

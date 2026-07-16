@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import type { PortalSession } from "../../lib/portal-session";
 import styles from "./ConnectedPortalDashboard.module.css";
 import { PortalPrivateWorkspace } from "./PortalPrivateWorkspace";
+import { ConnectedFieldVerification, ConnectedWorklogValidation } from "./ConnectedFieldVerification";
 
 type Props = {
   session: PortalSession;
@@ -185,6 +186,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
         </div>
       </section>
 
+      <ConnectedFieldVerification />
       {message ? <p className={styles.notice}>{message}</p> : null}
 
       <section className={styles.metrics} aria-label="Resumen del perfil">
@@ -201,6 +203,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
             <span>Privado por defecto</span>
           </div>
           <p className={styles.panelCopy}>Registra avances, entregables o problemas resueltos. Puedes vincularlos a un proyecto asignado y decidir quien puede verlos.</p>
+          <p className={styles.notice}>La fecha y hora se asignan automaticamente al guardar y no pueden modificarse. Despues podras solicitar la validacion de tu responsable.</p>
           <form className={styles.worklogForm} onSubmit={saveWorklog}>
             <label><span>Titulo</span><input name="title" placeholder="Ej. Control de niveles completado" required minLength={4} /></label>
             <label><span>Tipo</span><select name="type"><option value="FIELD_UPDATE">Avance de trabajo</option><option value="DELIVERABLE">Entregable</option><option value="PROBLEM_SOLVED">Problema resuelto</option><option value="MILESTONE">Hito alcanzado</option><option value="LEARNING">Aprendizaje tecnico</option></select></label>
@@ -222,7 +225,7 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
 
         <section className={`${styles.panel} ${styles.widePanel}`}>
           <div className={styles.panelHeading}><div><p className={styles.eyebrow}>CV vivo</p><h2>Evidencia reciente</h2></div><span>{worklogs.length}</span></div>
-          <div className={styles.worklogList}>{worklogs.length ? worklogs.map((worklog) => <article key={worklog.id}><div><span>{worklog.type.replaceAll("_", " ")}</span><strong>{worklog.title}</strong><p>{worklog.summary}</p>{worklog.media?.length ? <div className={styles.evidenceGallery}>{worklog.media.map((media, index) => <a key={media.id} href={`/api/terraqo/portal/worklog/evidence/${media.id}`} target="_blank" rel="noreferrer"><Image src={`/api/terraqo/portal/worklog/evidence/${media.id}`} alt={`${worklog.title}, evidencia ${index + 1}`} width={320} height={220} unoptimized /></a>)}</div> : null}{worklog.project ? <small>Proyecto: {worklog.project.title}</small> : null}</div><aside><b>{evidenceLabels[worklog.evidenceStatus] || worklog.evidenceStatus}</b><small>{worklog.visibility}</small></aside></article>) : <p className={styles.empty}>Tu primera entrada puede ser un avance, un entregable o un problema resuelto.</p>}</div>
+          <div className={styles.worklogList}>{worklogs.length ? worklogs.map((worklog) => <article key={worklog.id}><div><span>{worklog.type.replaceAll("_", " ")} · {new Intl.DateTimeFormat("es-PE", { dateStyle: "medium", timeStyle: "short" }).format(new Date(worklog.occurredAt))}</span><strong>{worklog.title}</strong><p>{worklog.summary}</p>{worklog.media?.length ? <div className={styles.evidenceGallery}>{worklog.media.map((media, index) => <a key={media.id} href={`/api/terraqo/portal/worklog/evidence/${media.id}`} target="_blank" rel="noreferrer"><Image src={`/api/terraqo/portal/worklog/evidence/${media.id}`} alt={`${worklog.title}, evidencia ${index + 1}`} width={320} height={220} unoptimized /></a>)}</div> : null}{worklog.project ? <small>Proyecto: {worklog.project.title}</small> : null}<ConnectedWorklogValidation worklogId={worklog.id} validations={worklog.validations || []} /></div><aside><b>{evidenceLabels[worklog.evidenceStatus] || worklog.evidenceStatus}</b><small>{worklog.visibility}</small></aside></article>) : <p className={styles.empty}>Tu primera entrada puede ser un avance, un entregable o un problema resuelto.</p>}</div>
         </section>
 
         {session.professionalNetwork?.opportunities.length ? <section className={`${styles.panel} ${styles.widePanel}`}><div className={styles.panelHeading}><div><p className={styles.eyebrow}>Oportunidades ICC</p><h2>Convocatorias abiertas</h2></div><span>{session.professionalNetwork.opportunities.length}</span></div><div className={styles.opportunityGrid}>{session.professionalNetwork.opportunities.map((opportunity) => <article key={opportunity.id}><strong>{opportunity.title}</strong><p>{opportunity.summary}</p><span>{opportunity.location || opportunity.modality || "Por coordinar"}</span></article>)}</div></section> : null}
@@ -370,6 +373,7 @@ function AdminDashboard({ session, message, onLogout }: Props) {
         <div><p className={styles.eyebrow}>Administrador del workspace</p><h1>{session.user.name}</h1><p className={styles.lead}>Acceso verificado para {session.workspace.brandName || session.workspace.name}.</p></div>
         <div className={styles.heroActions}><button type="button" onClick={onLogout}>Cerrar sesion</button></div>
       </section>
+      <ConnectedFieldVerification showAttendance={false} />
       {message ? <p className={styles.notice}>{message}</p> : null}
       <section className={styles.panel}><p className={styles.eyebrow}>Workspace aislado</p><h2>Tu sesion pertenece unicamente a ICC Topografia.</h2><p className={styles.panelCopy}>La administracion completa seguira conectandose por permisos del workspace, sin compartir datos con otros clientes de Terraqo.</p></section>
     </main>
