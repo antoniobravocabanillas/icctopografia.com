@@ -212,13 +212,13 @@ export default function CareersApplicationForm({ categories, taxonomies, jobs }:
         <label>
           <input name="termsAccepted" type="checkbox" required />
           <span>
-            Acepto los <a href="https://iridescent-fenglisu-d6595c.netlify.app/terminos" target="_blank" rel="noreferrer">Terminos y condiciones</a> de Red Profesional Terraqo y autorizo la creacion de mi perfil privado. *
+            Acepto los <a href="https://terraqoglobal.com/terminos" target="_blank" rel="noreferrer">Terminos y condiciones</a> de Red Profesional Terraqo y autorizo la creacion de mi perfil privado. *
           </span>
         </label>
         <label>
           <input name="privacyAccepted" type="checkbox" required />
           <span>
-            He leido la <a href="https://iridescent-fenglisu-d6595c.netlify.app/privacidad" target="_blank" rel="noreferrer">Politica de privacidad</a> y autorizo el tratamiento de mis datos para procesos profesionales. *
+            He leido la <a href="https://terraqoglobal.com/privacidad" target="_blank" rel="noreferrer">Politica de privacidad</a> y autorizo el tratamiento de mis datos para procesos profesionales. *
           </span>
         </label>
       </div>

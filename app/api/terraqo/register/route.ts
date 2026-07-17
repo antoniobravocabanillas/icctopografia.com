@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server";
-
-const terraqoBaseUrl =
-  process.env.TERRAQO_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_TERRAQO_API_URL ||
-  "https://iridescent-fenglisu-d6595c.netlify.app";
-
-function terraqoUrl(path: string) {
-  return `${terraqoBaseUrl.replace(/\/$/, "")}${path}`;
-}
+import { terraqoUrl } from "../../../lib/terraqo-api";
 
 export async function POST(request: Request) {
   try {

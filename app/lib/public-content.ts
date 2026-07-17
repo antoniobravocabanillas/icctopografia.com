@@ -1,14 +1,10 @@
 import { clients, featuredProjects, featuredServices } from "./home-data";
 import { terraqoData } from "./terraqo-data";
+import { terraqoBaseUrl } from "./terraqo-api";
 
 type PublicContent = typeof terraqoData & {
   clients?: typeof clients;
 };
-
-const terraqoBaseUrl =
-  process.env.TERRAQO_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_TERRAQO_API_URL ||
-  "https://iridescent-fenglisu-d6595c.netlify.app";
 
 const contentUrl =
   process.env.TERRAQO_PUBLIC_CONTENT_URL ||
