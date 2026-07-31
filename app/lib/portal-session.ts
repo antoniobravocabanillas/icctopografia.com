@@ -1,5 +1,7 @@
 export const portalSessionCookie = "icc_portal_session";
 
+export type PortalAccountRole = "professional" | "client" | "admin";
+
 export type PortalDocument = {
   id: string;
   type: "CV" | "DNI_FRONT" | "DNI_BACK" | "CERTIFICATE" | "PROFESSIONAL_LICENSE" | "CRIMINAL_RECORD" | "MEDICAL_EXAM" | "BANK_CERTIFICATE" | "OTHER";
@@ -110,3 +112,20 @@ export type PortalSession = {
     };
   } | null;
 };
+
+const adminRoles = new Set(["admin", "administrator", "owner", "workspace_admin", "super_admin"]);
+
+/**
+ * Resolves the portal surface without granting administrator access by default.
+ * Profile data takes precedence because Terraqo can return enum roles in upper case.
+ */
+export function resolvePortalRole(session: PortalSession): PortalAccountRole | null {
+  if (session.professional) return "professional";
+  if (session.client) return "client";
+
+  const role = String(session.user.role || "").trim().toLowerCase().replaceAll("-", "_");
+  if (role === "professional") return "professional";
+  if (role === "client") return "client";
+  if (adminRoles.has(role)) return "admin";
+  return null;
+}

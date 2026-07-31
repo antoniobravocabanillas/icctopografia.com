@@ -14,9 +14,13 @@ export async function POST(request: Request) {
     });
     const payload = await response.json().catch(() => ({}));
     const token = payload?.data?.token;
+    const status = response.status >= 500 ? 502 : response.status;
+    const responsePayload = response.status >= 500
+      ? { error: { message: "Portal Terraqo no pudo validar el acceso. Intenta nuevamente en unos minutos." } }
+      : payload;
     const result = NextResponse.json(
-      token ? { data: { ...payload.data, token: undefined } } : payload,
-      { status: response.status },
+      token ? { data: { ...payload.data, token: undefined } } : responsePayload,
+      { status },
     );
 
     if (response.ok && token) {

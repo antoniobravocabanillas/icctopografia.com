@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import type { PortalSession } from "../../lib/portal-session";
+import { resolvePortalRole, type PortalSession } from "../../lib/portal-session";
 import styles from "./ConnectedPortalDashboard.module.css";
 import { PortalPrivateWorkspace } from "./PortalPrivateWorkspace";
 import { ConnectedFieldVerification, ConnectedWorklogValidation } from "./ConnectedFieldVerification";
@@ -381,7 +381,21 @@ function AdminDashboard({ session, message, onLogout }: Props) {
 }
 
 export default function ConnectedPortalDashboard(props: Props) {
-  if (props.session.user.role === "professional") return <ProfessionalDashboard {...props} />;
-  if (props.session.user.role === "client") return <ClientDashboard {...props} />;
-  return <AdminDashboard {...props} />;
+  const role = resolvePortalRole(props.session);
+  if (role === "professional") return <ProfessionalDashboard {...props} />;
+  if (role === "client") return <ClientDashboard {...props} />;
+  if (role === "admin") return <AdminDashboard {...props} />;
+
+  return (
+    <main className={styles.shell}>
+      <section className={styles.hero}>
+        <div>
+          <p className={styles.eyebrow}>Portal Terraqo</p>
+          <h1>No pudimos determinar el tipo de cuenta</h1>
+          <p className={styles.lead}>La sesion es valida, pero el perfil recibido no tiene un rol compatible con el portal de ICC Topografia.</p>
+        </div>
+        <div className={styles.heroActions}><button type="button" onClick={props.onLogout}>Cerrar sesion</button></div>
+      </section>
+    </main>
+  );
 }
