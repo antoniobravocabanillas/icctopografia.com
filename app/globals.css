@@ -1191,7 +1191,8 @@ main > .section:first-child { padding-top: 156px; }
 }
 
 .footer-contact svg,
-.footer-support svg {
+.footer-support svg,
+.footer-sales-contact svg {
   width: 22px;
   height: 22px;
   flex: 0 0 auto;
@@ -1226,6 +1227,106 @@ main > .section:first-child { padding-top: 156px; }
 .footer-column a:hover {
   color: var(--brand);
   transform: translateX(6px);
+}
+
+.footer-sales-contact {
+  width: min(100%, 430px);
+  margin-top: 26px;
+  padding: 18px 24px 20px;
+  border: 1px solid rgba(0, 143, 135, .16);
+  border-radius: var(--radius-ui);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(239, 249, 248, .74));
+  box-shadow: 0 22px 54px rgba(0, 54, 52, .08);
+}
+
+.footer-sales-contact h3 {
+  margin: 0;
+  color: var(--brand-dark);
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.footer-sales-contact h3::after {
+  content: "";
+  display: block;
+  width: 45px;
+  height: 2px;
+  margin-top: 16px;
+  background: var(--brand);
+}
+
+.footer-sales-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(0, 143, 135, .14);
+}
+
+.footer-sales-avatar {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(0, 143, 135, .42);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+}
+
+.footer-sales-avatar svg {
+  width: 28px;
+  height: 28px;
+}
+
+.footer-sales-profile strong,
+.footer-sales-profile span {
+  display: block;
+}
+
+.footer-sales-profile strong {
+  color: #102b35;
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.footer-sales-profile span {
+  margin-top: 3px;
+  color: #526a72;
+  font-size: 13px;
+}
+
+.footer-sales-contact a,
+.footer-sales-contact p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0 0;
+  color: #405a63;
+  font-size: 15px;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.footer-sales-contact a {
+  width: fit-content;
+  transition: color .2s ease, transform .2s ease;
+}
+
+.footer-sales-contact a:hover {
+  color: var(--brand);
+  transform: translateX(4px);
+}
+
+.footer-sales-contact p svg {
+  width: 21px;
+  height: 21px;
 }
 
 .footer-support {
