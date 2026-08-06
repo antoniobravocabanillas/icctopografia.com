@@ -17,6 +17,7 @@
   --font-data: "IBM Plex Mono", Consolas, monospace;
 }
 
+
 .terraqo-chat {
   position: fixed;
   right: 22px;
@@ -2510,4 +2511,34 @@ main > .section:first-child { padding-top: 156px; }
   .service-premium-card-main {
     min-height: auto;
   }
+}
+
+/* Final ecommerce hardening: card parity, real actions and visible cart */
+.cart-nav-link { position: relative; width: 44px; min-height: 44px; display: inline-grid; place-items: center; overflow: visible; border: 1px solid rgba(127,242,233,.28); border-radius: var(--radius-ui); background: rgba(255,255,255,.10); color: #7ff2e9; text-shadow: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 16px 34px rgba(0, 54, 52, .18); }
+.cart-nav-link svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.cart-nav-link span { position: absolute; right: -8px; top: -8px; display: grid; min-width: 21px; height: 21px; place-items: center; border: 2px solid rgba(2,13,20,.72); border-radius: 999px; background: var(--brand); color: white; font-family: var(--font-data); font-size: 10px; font-weight: 900; }
+.cart-nav-link:hover { border-color: rgba(127,242,233,.56); background: rgba(0,143,135,.26); color: white; }
+.sellable-store-section .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+.sellable-product-card { min-height: 642px; border-radius: 14px; }
+.sellable-product-card .product-media { height: 250px; padding: 20px; }
+.sellable-product-card .product-media img { max-height: 220px; object-fit: contain; }
+.sellable-product-card .product-media a { display: grid; height: 100%; grid-template-rows: none; place-items: center; }
+.sellable-product-card .product-body { display: flex; flex: 1; flex-direction: column; padding: 26px; }
+.sellable-product-card .product-title-link { display: block; height: auto; grid-template-rows: none; }
+.sellable-product-card h3 { min-height: 52px; font-size: 21px; line-height: 1.18; }
+.sellable-product-card p { display: -webkit-box; min-height: 68px; max-height: 68px; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; margin: 12px 0 0; font-size: 14px; line-height: 1.6; }
+.sellable-product-card .mini-spec-grid { margin-top: 16px; }
+.sellable-product-card .product-row { margin-top: auto; }
+.sellable-product-card .product-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; align-items: stretch; margin-top: 16px; }
+.sellable-product-card .store-action-button { display: inline-flex !important; height: auto !important; min-height: 46px; grid-template-rows: none !important; text-align: center; line-height: 1.15; }
+.sellable-product-card .compare-button { margin-top: 12px; }
+.option-list label:has(input:checked) { border-color: var(--brand); background: rgba(127,242,233,.14); }
+
+@media (max-width: 980px) {
+  .sellable-store-section .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .sellable-store-section .product-grid { grid-template-columns: 1fr; }
+  .sellable-product-card .product-actions { grid-template-columns: 1fr; }
 }

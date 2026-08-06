@@ -29,7 +29,7 @@ export default function ProductCard({
         <span className="card-meta">
           {product.category} / {product.brand}
         </span>
-        <Link href={`/tienda/${product.slug}/`}>
+        <Link className="product-title-link" href={`/tienda/${product.slug}/`}>
           <h3>{product.name}</h3>
         </Link>
         <p>{product.summary}</p>

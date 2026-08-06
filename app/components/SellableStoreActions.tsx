@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { SellableProduct, toCartItem } from "../lib/sellable-store";
 import { addCartItem } from "./SellableCartStore";
@@ -13,9 +14,17 @@ export function AddToCartAction({ product, label = "Agregar al carrito" }: { pro
     setAdded(true);
   }
 
+  if (added) {
+    return (
+      <Link className="store-action-button primary" href="/checkout/">
+        Ver carrito
+      </Link>
+    );
+  }
+
   return (
     <button className="store-action-button primary" type="button" onClick={add}>
-      {added ? "Ver / continuar pedido" : quoteOnly ? "Agregar para cotizar" : label}
+      {quoteOnly ? "Solicitar cotización" : label}
     </button>
   );
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { announcement, languages, mainNavigation, siteLinks } from "../lib/site-data";
+import SellableCartNavButton from "./SellableCartNavButton";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -59,6 +60,8 @@ export default function Header() {
           </svg>
           <span>Cuenta cliente</span>
         </Link>
+
+        <SellableCartNavButton />
 
         <Link className="header-cta" href={siteLinks.quote} onClick={closeMenus}>
           Cotizar proyecto

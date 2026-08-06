@@ -20,6 +20,7 @@ const paymentOptions = [
 export default function SellableCheckoutClient() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [shipping, setShipping] = useState(shippingOptions[0]);
+  const [paymentMethod, setPaymentMethod] = useState(paymentOptions[0]);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const subtotal = useMemo(() => getCartSubtotal(items), [items]);
@@ -52,7 +53,7 @@ export default function SellableCheckoutClient() {
       totals: { subtotal, igv, shipping: shipping.price, total },
       shippingMethod: shipping.id,
       customerType: formData.get("customerType"),
-      paymentMethod: formData.get("paymentMethod"),
+      paymentMethod: paymentMethod.id,
       customer: Object.fromEntries(formData.entries()),
     };
     const response = await fetch("/api/checkout", {
@@ -69,7 +70,13 @@ export default function SellableCheckoutClient() {
     writeCart([]);
     setItems([]);
     setStatus("success");
-    setMessage(`Pedido recibido: ${result.id}. Un asesor validará disponibilidad, entrega y pago.`);
+    const paymentInstructions =
+      paymentMethod.id === "bank"
+        ? "Te enviaremos cuenta bancaria, CCI y validación de comprobante por correo/WhatsApp."
+        : paymentMethod.id === "card"
+          ? "Te enviaremos el enlace seguro de pago cuando el asesor confirme disponibilidad."
+          : "Te confirmaremos si tu zona permite pago contra entrega y el monto final a cancelar.";
+    setMessage(`Pedido recibido: ${result.id}. ${paymentInstructions}`);
   }
 
   if (!items.length && status !== "success") {
@@ -129,9 +136,9 @@ export default function SellableCheckoutClient() {
           <div className="checkout-card">
             <p className="eyebrow">Método de pago</p>
             <div className="option-list">
-              {paymentOptions.map((option, index) => (
-                <label className={index === 0 ? "is-active" : ""} key={option.id}>
-                  <input type="radio" name="paymentMethod" value={option.id} defaultChecked={index === 0} />
+              {paymentOptions.map((option) => (
+                <label className={paymentMethod.id === option.id ? "is-active" : ""} key={option.id}>
+                  <input type="radio" name="paymentMethod" value={option.id} checked={paymentMethod.id === option.id} onChange={() => setPaymentMethod(option)} />
                   <span><strong>{option.label}</strong><small>{option.detail}</small></span>
                 </label>
               ))}
