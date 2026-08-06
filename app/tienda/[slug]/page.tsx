@@ -1,6 +1,7 @@
-import DetailPage from "../../components/DetailPage";
+import SellableProductDetail from "../../components/SellableProductDetail";
 import { getPublicContent } from "../../lib/public-content";
 import { cleanArray, cleanText } from "../../lib/text";
+import { notFound } from "next/navigation";
 
 export const revalidate = 300;
 
@@ -13,6 +14,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const content = await getPublicContent();
   const product = content.products.find((item) => item.slug === slug);
+  if (!product) notFound();
   const cleanProduct = product
     ? {
         ...product,
@@ -26,8 +28,24 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         availability: cleanText(product.availability),
         badge: cleanText(product.badge),
         tags: cleanArray(product.tags),
-        specs: Object.fromEntries(Object.entries(product.specs || {}).map(([key, value]) => [cleanText(key), cleanText(value)])),
+        specs: Object.fromEntries(Object.entries((product as any).specs || (product as any).specifications || {}).map(([key, value]) => [cleanText(key), cleanText(value)])),
       }
     : product;
-  return <DetailPage item={cleanProduct} type="product" />;
+  const related = content.products
+    .filter((item) => item.slug !== slug)
+    .map((item) => ({
+      ...item,
+      name: cleanText(item.name),
+      title: cleanText(item.title),
+      category: cleanText(item.category),
+      brand: cleanText(item.brand),
+      model: cleanText(item.model),
+      summary: cleanText(item.summary),
+      description: cleanText(item.description),
+      availability: cleanText(item.availability),
+      badge: cleanText(item.badge),
+      tags: cleanArray(item.tags),
+      specs: Object.fromEntries(Object.entries((item as any).specs || (item as any).specifications || {}).map(([key, value]) => [cleanText(key), cleanText(value)])),
+    }));
+  return <SellableProductDetail product={cleanProduct as any} related={related as any} />;
 }

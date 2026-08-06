@@ -16,6 +16,7 @@ export default async function StorePage() {
     summary: cleanText(product.summary),
     availability: cleanText(product.availability),
     tags: cleanArray(product.tags),
+    specs: Object.fromEntries(Object.entries((product as any).specs || (product as any).specifications || {}).map(([key, value]) => [cleanText(key), cleanText(value)])),
   }));
   const categories = content.categories.map((category) => ({
     ...category,
