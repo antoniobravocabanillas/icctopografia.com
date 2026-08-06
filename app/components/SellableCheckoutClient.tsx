@@ -31,10 +31,12 @@ const paymentOptions = [
 
 type CheckoutResult = {
   id: string;
+  reusedOrder?: boolean;
   profile: {
     email: string;
-    temporaryPassword: string;
+    temporaryPassword?: string | null;
     accountUrl: string;
+    status?: "CREATED" | "EXISTING";
   };
   paymentInstructions: string;
 };
@@ -103,7 +105,11 @@ export default function SellableCheckoutClient() {
     setConfirmedItems(snapshot);
     setResult(data);
     setStatus("success");
-    setMessage("Pedido creado correctamente. También se creó el perfil de cliente para dar seguimiento.");
+    setMessage(
+      data?.profile?.status === "EXISTING"
+        ? "Pedido registrado correctamente. Usaremos el perfil cliente existente para el seguimiento."
+        : "Pedido creado correctamente. También se creó el perfil de cliente para dar seguimiento.",
+    );
     writeCart([]);
     setItems([]);
   }
@@ -134,18 +140,30 @@ export default function SellableCheckoutClient() {
           {status === "success" && result ? (
             <div className="checkout-card checkout-confirmation">
               <p className="eyebrow">Pedido confirmado</p>
-              <h1>Tu pedido fue recibido y tu perfil cliente quedó creado.</h1>
+              <h1>
+                {result.profile.status === "EXISTING"
+                  ? "Tu pedido fue recibido y quedó asociado a tu perfil cliente."
+                  : "Tu pedido fue recibido y tu perfil cliente quedó creado."}
+              </h1>
               <p>
                 Código de pedido: <strong>{result.id}</strong>. Desde tu perfil recibirás los datos de pago,
                 validación de stock, comprobantes, estado de entrega y comunicación comercial.
               </p>
               <div className="client-access-box">
-                <span>Acceso cliente creado</span>
+                <span>{result.profile.status === "EXISTING" ? "Perfil cliente existente" : "Acceso cliente creado"}</span>
                 <dl>
                   <div><dt>Correo</dt><dd>{result.profile.email}</dd></div>
-                  <div><dt>Contraseña temporal</dt><dd>{result.profile.temporaryPassword}</dd></div>
+                  {result.profile.temporaryPassword ? (
+                    <div><dt>Contraseña temporal</dt><dd>{result.profile.temporaryPassword}</dd></div>
+                  ) : (
+                    <div><dt>Acceso</dt><dd>Ingresa con tu contraseña actual o usa recuperar contraseña.</dd></div>
+                  )}
                 </dl>
-                <small>Por seguridad, el cliente deberá cambiar esta contraseña al ingresar por primera vez.</small>
+                <small>
+                  {result.profile.temporaryPassword
+                    ? "Por seguridad, el cliente deberá cambiar esta contraseña al ingresar por primera vez."
+                    : "No generamos una nueva contraseña para evitar duplicar o sobrescribir el acceso existente."}
+                </small>
               </div>
               <div className="payment-next-box">
                 <strong>Siguiente paso de pago</strong>
