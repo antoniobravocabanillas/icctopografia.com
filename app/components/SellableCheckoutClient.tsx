@@ -12,30 +12,58 @@ const shippingOptions = [
 ];
 
 const paymentOptions = [
-  { id: "bank", label: "Transferencia bancaria", detail: "Te enviaremos los datos para realizar el pago." },
-  { id: "card", label: "Tarjeta crédito / débito", detail: "Integración de pasarela pendiente de activación." },
-  { id: "delivery", label: "Pago contra entrega", detail: "Disponible según zona y validación comercial." },
+  {
+    id: "bank",
+    label: "Transferencia bancaria",
+    detail: "El pedido queda creado. Los datos bancarios se enviarán al perfil del cliente y por correo/WhatsApp.",
+  },
+  {
+    id: "card",
+    label: "Tarjeta crédito / débito",
+    detail: "El pedido queda creado. El link seguro de pago se enviará al perfil cuando se valide disponibilidad.",
+  },
+  {
+    id: "delivery",
+    label: "Pago contra entrega",
+    detail: "El pedido queda creado. Un asesor confirmará cobertura, monto final y condiciones de entrega.",
+  },
 ];
+
+type CheckoutResult = {
+  id: string;
+  profile: {
+    email: string;
+    temporaryPassword: string;
+    accountUrl: string;
+  };
+  paymentInstructions: string;
+};
 
 export default function SellableCheckoutClient() {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [confirmedItems, setConfirmedItems] = useState<CartItem[]>([]);
   const [shipping, setShipping] = useState(shippingOptions[0]);
   const [paymentMethod, setPaymentMethod] = useState(paymentOptions[0]);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const subtotal = useMemo(() => getCartSubtotal(items), [items]);
-  const igv = useMemo(() => getCartIgv(items), [items]);
-  const total = useMemo(() => getCartTotal(items, shipping.price), [items, shipping]);
+  const [result, setResult] = useState<CheckoutResult | null>(null);
+
+  const summaryItems = confirmedItems.length ? confirmedItems : items;
+  const subtotal = useMemo(() => getCartSubtotal(summaryItems), [summaryItems]);
+  const igv = useMemo(() => getCartIgv(summaryItems), [summaryItems]);
+  const total = useMemo(() => getCartTotal(summaryItems, shipping.price), [summaryItems, shipping]);
 
   useEffect(() => setItems(readCart()), []);
 
   function updateQuantity(productId: string, quantity: number) {
+    if (status === "success") return;
     const next = items.map((item) => (item.productId === productId ? { ...item, quantity: Math.max(1, Math.min(quantity, Math.max(item.stock, 1))) } : item));
     setItems(next);
     writeCart(next);
   }
 
   function remove(productId: string) {
+    if (status === "success") return;
     const next = items.filter((item) => item.productId !== productId);
     setItems(next);
     writeCart(next);
@@ -43,40 +71,41 @@ export default function SellableCheckoutClient() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!items.length) return;
+    if (!items.length || status === "loading") return;
     setStatus("loading");
     setMessage("");
+
+    const snapshot = items.map((item) => ({ ...item }));
     const formData = new FormData(event.currentTarget);
     const payload = {
       workspaceSlug: "icc-topografia",
-      items,
-      totals: { subtotal, igv, shipping: shipping.price, total },
+      items: snapshot,
+      totals: { subtotal: getCartSubtotal(snapshot), igv: getCartIgv(snapshot), shipping: shipping.price, total: getCartTotal(snapshot, shipping.price) },
       shippingMethod: shipping.id,
       customerType: formData.get("customerType"),
       paymentMethod: paymentMethod.id,
       customer: Object.fromEntries(formData.entries()),
     };
+
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const result = await response.json().catch(() => null);
+    const data = await response.json().catch(() => null);
+
     if (!response.ok) {
       setStatus("error");
-      setMessage(result?.message || "No se pudo registrar el pedido.");
+      setMessage(data?.message || "No se pudo registrar el pedido. Revisa los datos e inténtalo nuevamente.");
       return;
     }
+
+    setConfirmedItems(snapshot);
+    setResult(data);
+    setStatus("success");
+    setMessage("Pedido creado correctamente. También se creó el perfil de cliente para dar seguimiento.");
     writeCart([]);
     setItems([]);
-    setStatus("success");
-    const paymentInstructions =
-      paymentMethod.id === "bank"
-        ? "Te enviaremos cuenta bancaria, CCI y validación de comprobante por correo/WhatsApp."
-        : paymentMethod.id === "card"
-          ? "Te enviaremos el enlace seguro de pago cuando el asesor confirme disponibilidad."
-          : "Te confirmaremos si tu zona permite pago contra entrega y el monto final a cancelar.";
-    setMessage(`Pedido recibido: ${result.id}. ${paymentInstructions}`);
   }
 
   if (!items.length && status !== "success") {
@@ -97,76 +126,109 @@ export default function SellableCheckoutClient() {
       <div className="container checkout-grid">
         <form className="checkout-form" onSubmit={submit}>
           <div className="checkout-steps">
-            <span className="is-active">1 Entrega</span>
-            <span>2 Pago</span>
-            <span>3 Confirmación</span>
-          </div>
-          <div className="checkout-card">
-            <p className="eyebrow">Datos de entrega</p>
-            <div className="checkout-toggle">
-              <label><input type="radio" name="customerType" value="person" defaultChecked /> Persona natural</label>
-              <label><input type="radio" name="customerType" value="company" /> Empresa</label>
-            </div>
-            <div className="checkout-fields">
-              <input name="name" required placeholder="Nombres y apellidos" />
-              <input name="document" placeholder="DNI / RUC" />
-              <input name="email" required type="email" placeholder="Email" />
-              <input name="phone" required placeholder="Teléfono / WhatsApp" />
-              <input className="wide" name="address" required placeholder="Dirección" />
-              <input className="wide" name="reference" placeholder="Referencia opcional" />
-              <select name="department" defaultValue="Lima"><option>Lima</option></select>
-              <select name="province" defaultValue="Lima"><option>Lima</option></select>
-              <select name="district" defaultValue="La Molina"><option>La Molina</option><option>Miraflores</option><option>San Isidro</option></select>
-            </div>
+            <span className={status !== "success" ? "is-active" : "is-done"}>1 Entrega</span>
+            <span className={status !== "success" ? "is-active" : "is-done"}>2 Pago</span>
+            <span className={status === "success" ? "is-active" : ""}>3 Confirmación</span>
           </div>
 
-          <div className="checkout-card">
-            <p className="eyebrow">Método de envío</p>
-            <div className="option-list">
-              {shippingOptions.map((option) => (
-                <label className={shipping.id === option.id ? "is-active" : ""} key={option.id}>
-                  <input type="radio" name="shippingMethod" value={option.id} checked={shipping.id === option.id} onChange={() => setShipping(option)} />
-                  <span><strong>{option.label}</strong><small>{option.detail}</small></span>
-                  <b>{option.price ? formatPrice(option.price, "PEN") : "Gratis"}</b>
-                </label>
-              ))}
+          {status === "success" && result ? (
+            <div className="checkout-card checkout-confirmation">
+              <p className="eyebrow">Pedido confirmado</p>
+              <h1>Tu pedido fue recibido y tu perfil cliente quedó creado.</h1>
+              <p>
+                Código de pedido: <strong>{result.id}</strong>. Desde tu perfil recibirás los datos de pago,
+                validación de stock, comprobantes, estado de entrega y comunicación comercial.
+              </p>
+              <div className="client-access-box">
+                <span>Acceso cliente creado</span>
+                <dl>
+                  <div><dt>Correo</dt><dd>{result.profile.email}</dd></div>
+                  <div><dt>Contraseña temporal</dt><dd>{result.profile.temporaryPassword}</dd></div>
+                </dl>
+                <small>Por seguridad, el cliente deberá cambiar esta contraseña al ingresar por primera vez.</small>
+              </div>
+              <div className="payment-next-box">
+                <strong>Siguiente paso de pago</strong>
+                <p>{result.paymentInstructions}</p>
+              </div>
+              <div className="checkout-final-actions">
+                <Link className="store-action-button primary" href={result.profile.accountUrl}>Ir a mi perfil</Link>
+                <Link className="store-action-button ghost" href="/tienda/">Seguir comprando</Link>
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="checkout-card">
+                <p className="eyebrow">Datos de entrega</p>
+                <div className="checkout-toggle">
+                  <label><input type="radio" name="customerType" value="person" defaultChecked /> Persona natural</label>
+                  <label><input type="radio" name="customerType" value="company" /> Empresa</label>
+                </div>
+                <div className="checkout-fields">
+                  <input name="name" required placeholder="Nombres y apellidos" />
+                  <input name="document" required placeholder="DNI / RUC" />
+                  <input name="email" required type="email" placeholder="Email" />
+                  <input name="phone" required placeholder="Teléfono / WhatsApp" />
+                  <input className="wide" name="address" required placeholder="Dirección" />
+                  <input className="wide" name="reference" placeholder="Referencia opcional" />
+                  <select name="department" defaultValue="Lima"><option>Lima</option></select>
+                  <select name="province" defaultValue="Lima"><option>Lima</option></select>
+                  <select name="district" defaultValue="La Molina"><option>La Molina</option><option>Miraflores</option><option>San Isidro</option></select>
+                </div>
+              </div>
 
-          <div className="checkout-card">
-            <p className="eyebrow">Método de pago</p>
-            <div className="option-list">
-              {paymentOptions.map((option) => (
-                <label className={paymentMethod.id === option.id ? "is-active" : ""} key={option.id}>
-                  <input type="radio" name="paymentMethod" value={option.id} checked={paymentMethod.id === option.id} onChange={() => setPaymentMethod(option)} />
-                  <span><strong>{option.label}</strong><small>{option.detail}</small></span>
-                </label>
-              ))}
-            </div>
-          </div>
-          <button className="store-action-button primary checkout-submit" disabled={status === "loading"} type="submit">
-            {status === "loading" ? "Registrando..." : "Continuar al pago"}
-          </button>
+              <div className="checkout-card">
+                <p className="eyebrow">Método de envío</p>
+                <div className="option-list">
+                  {shippingOptions.map((option) => (
+                    <label className={shipping.id === option.id ? "is-active" : ""} key={option.id}>
+                      <input type="radio" name="shippingMethod" value={option.id} checked={shipping.id === option.id} onChange={() => setShipping(option)} />
+                      <span><strong>{option.label}</strong><small>{option.detail}</small></span>
+                      <b>{option.price ? formatPrice(option.price, "PEN") : "Gratis"}</b>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="checkout-card">
+                <p className="eyebrow">Método de pago</p>
+                <div className="option-list">
+                  {paymentOptions.map((option) => (
+                    <label className={paymentMethod.id === option.id ? "is-active" : ""} key={option.id}>
+                      <input type="radio" name="paymentMethod" value={option.id} checked={paymentMethod.id === option.id} onChange={() => setPaymentMethod(option)} />
+                      <span><strong>{option.label}</strong><small>{option.detail}</small></span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <button className="store-action-button primary checkout-submit" disabled={status === "loading"} type="submit">
+                {status === "loading" ? "Creando pedido y perfil..." : "Finalizar pedido"}
+              </button>
+            </>
+          )}
+
           {message ? <p className={`checkout-message ${status}`}>{message}</p> : null}
         </form>
 
         <aside className="checkout-summary">
           <div className="checkout-card">
             <h2>Resumen del pedido</h2>
-            <p>{items.length} producto(s)</p>
+            <p>{summaryItems.length} producto(s)</p>
             <div className="cart-lines">
-              {items.map((item) => (
+              {summaryItems.map((item) => (
                 <article key={item.productId}>
                   <img src={item.image || "/images/equipo-topografico-store.jpg"} alt={item.name} />
                   <div>
                     <strong>{item.name}</strong>
                     <small>x{item.quantity}</small>
-                    <div className="cart-line-controls">
-                      <button type="button" onClick={() => updateQuantity(item.productId, item.quantity - 1)}>-</button>
-                      <span>{item.quantity}</span>
-                      <button type="button" onClick={() => updateQuantity(item.productId, item.quantity + 1)}>+</button>
-                      <button type="button" onClick={() => remove(item.productId)}>Quitar</button>
-                    </div>
+                    {status !== "success" ? (
+                      <div className="cart-line-controls">
+                        <button type="button" onClick={() => updateQuantity(item.productId, item.quantity - 1)}>-</button>
+                        <span>{item.quantity}</span>
+                        <button type="button" onClick={() => updateQuantity(item.productId, item.quantity + 1)}>+</button>
+                        <button type="button" onClick={() => remove(item.productId)}>Quitar</button>
+                      </div>
+                    ) : null}
                   </div>
                   <b>{item.requiresQuote ? "Cotizar" : formatPrice(item.price * item.quantity, item.currency)}</b>
                 </article>
