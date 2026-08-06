@@ -109,6 +109,22 @@ export type PortalSession = {
       phone?: string | null;
       quotes: Array<{ id: string; number: string; status: string; total: number; currency: string; createdAt: string }>;
       projects: Array<{ id: string; title: string; slug: string; status: string; location?: string | null; updatedAt: string }>;
+      user?: {
+        orders: Array<{
+          id: string;
+          status: string;
+          total: number;
+          currency: string;
+          notes?: string | null;
+          createdAt: string;
+          items: Array<{
+            quantity: number;
+            unitPrice: number;
+            subtotal: number;
+            product: { name: string; slug: string; mainImage?: string | null };
+          }>;
+        }>;
+      } | null;
     };
   } | null;
 };

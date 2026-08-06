@@ -339,6 +339,8 @@ function ProfessionalDashboard({ session, message, onLogout, onRefresh }: Props)
 
 function ClientDashboard({ session, message, onLogout }: Props) {
   const client = session.client?.client;
+  const orders = client?.user?.orders || [];
+  const publicOrderCode = (notes?: string | null) => notes?.match(/Codigo publico: ([A-Z0-9-]+)/)?.[1] || null;
   return (
     <main className={styles.shell}>
       <section className={styles.hero}>
@@ -348,17 +350,43 @@ function ClientDashboard({ session, message, onLogout }: Props) {
           <p className={styles.lead}>Cotizaciones y proyectos de ICC Topografia en un solo espacio.</p>
         </div>
         <div className={styles.heroActions}>
+          <a href="https://terraqoglobal.com/portal/mensajes" target="_blank" rel="noreferrer">Enviar mensaje</a>
           <a href="/contacto">Nueva solicitud</a>
           <button type="button" onClick={onLogout}>Cerrar sesion</button>
         </div>
       </section>
       {message ? <p className={styles.notice}>{message}</p> : null}
       <section className={styles.metrics}>
+        <Metric value={orders.length} label="Pedidos" />
         <Metric value={client?.quotes.length || 0} label="Cotizaciones" />
         <Metric value={client?.projects.length || 0} label="Proyectos" />
         <Metric value={session.client?.status || "Activo"} label="Estado de cuenta" />
       </section>
       <div className={styles.grid}>
+        <section className={`${styles.panel} ${styles.widePanel}`}>
+          <div className={styles.panelHeading}>
+            <div>
+              <p className={styles.eyebrow}>Historial comercial</p>
+              <h2>Mis pedidos</h2>
+            </div>
+            <span>{orders.length}</span>
+          </div>
+          <div className={styles.orderList}>
+            {orders.length ? orders.map((order) => (
+              <article key={order.id}>
+                <div>
+                  <span>{new Intl.DateTimeFormat("es-PE", { dateStyle: "medium" }).format(new Date(order.createdAt))}</span>
+                  <strong>{publicOrderCode(order.notes) || order.id}</strong>
+                  <p>{order.items.map((item) => `${item.quantity} x ${item.product.name}`).join(" / ")}</p>
+                </div>
+                <aside>
+                  <b>{order.currency} {Number(order.total).toLocaleString("es-PE", { minimumFractionDigits: 2 })}</b>
+                  <small>{order.status}</small>
+                </aside>
+              </article>
+            )) : <p className={styles.empty}>Aun no hay pedidos asociados a tu perfil.</p>}
+          </div>
+        </section>
         <section className={styles.panel}><div className={styles.panelHeading}><h2>Cotizaciones</h2></div><div className={styles.list}>{client?.quotes.length ? client.quotes.map((quote) => <article key={quote.id}><strong>{quote.number}</strong><span className={styles.status}>{quote.status}</span></article>) : <p className={styles.empty}>Aun no hay cotizaciones asociadas.</p>}</div></section>
         <section className={styles.panel}><div className={styles.panelHeading}><h2>Proyectos</h2></div><div className={styles.list}>{client?.projects.length ? client.projects.map((project) => <article key={project.id}><div><strong>{project.title}</strong><p>{project.location}</p></div><span className={styles.status}>{project.status}</span></article>) : <p className={styles.empty}>Aun no hay proyectos asociados.</p>}</div></section>
       </div>
