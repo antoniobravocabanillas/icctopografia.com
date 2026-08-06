@@ -26,7 +26,7 @@ export const languages = [
 
 export const siteLinks = {
   quote: "/#cotizar",
-  account: "/cuenta/",
+  account: "https://portal.terraqoglobal.com/cuenta?workspace=icc-topografia",
   careers: "/trabaja-con-nosotros/",
   store: "/tienda/",
 };
