@@ -28,18 +28,19 @@ export default async function StorePage() {
       <section className="section store-hero store-hero-premium">
         <div className="container store-hero-grid">
           <div className="store-hero-copy">
-            <p className="eyebrow">Tienda tecnica</p>
-            <h1>Equipos topograficos para cotizar con respaldo tecnico.</h1>
+            <p className="eyebrow">Soluciones técnicas ICC</p>
+            <h1>Tecnología, equipos y servicios especializados para proyectos de ingeniería.</h1>
             <p>
-              Explora estaciones totales, GNSS, drones, LiDAR y accesorios. Si no sabes que equipo corresponde a tu
-              obra, te orientamos segun uso, precision requerida y disponibilidad.
+              El catálogo vendible se administra desde el ecosistema Terraqo, pero aquí se presenta como una experiencia
+              comercial de ICC: selección técnica, cotización y acompañamiento para construcción, minería,
+              infraestructura, energía, catastro y geomática.
             </p>
             <div className="store-hero-actions">
               <a className="button primary" href="#catalogo-tienda">
-                Ver catalogo
+                Explorar soluciones
               </a>
-              <a className="button ghost" href="/contacto/">
-                Solicitar asesoria
+              <a className="button secondary ink" href="/contacto/">
+                Hablar con un asesor técnico
               </a>
             </div>
           </div>
@@ -51,14 +52,14 @@ export default async function StorePage() {
                 <h2>{featured.name}</h2>
                 <span>{featured.category}</span>
               </div>
-              <strong>Ver ficha tecnica -&gt;</strong>
+              <strong>Ver ficha técnica -&gt;</strong>
             </a>
           ) : null}
-          <div className="store-hero-proof" aria-label="Ventajas de la tienda tecnica">
+          <div className="store-hero-proof" aria-label="Ventajas de la tienda técnica ICC">
             {[
-              ["Uso", "Asesoria segun obra"],
+              ["Uso", "Asesoría según obra"],
               ["Stock", "Disponibilidad visible"],
-              ["Soporte", "Ficha y cotizacion"],
+              ["Soporte", "Ficha y cotización"],
             ].map(([label, value]) => (
               <div key={label}>
                 <span>{label}</span>
