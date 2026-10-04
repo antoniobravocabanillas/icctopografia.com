@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <header className={`site-header${mobileOpen ? " is-mobile-open" : ""}${scrolled ? " is-scrolled" : ""}`}>
       <Link className="brand" href="/" aria-label="ICC Topografia inicio" onClick={closeMenus}>
-        <Image src="/brand/icc-topografia-logo.png" alt="ICC Topografia" width={206} height={43} priority />
+        <Image src="/brand/1 copia.png" alt="ICC Topografia" width={206} height={43} priority />
       </Link>
 
       <button
